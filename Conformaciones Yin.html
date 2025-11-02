@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esquemas de Conformaciones (Taiyin y Shaoyin)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+
+        /* --- Estilos de Navegación Principal --- */
+        .conformation-tab-button {
+            color: #4B5563;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .conformation-tab-button.active-taiyin {
+            color: #C81E1E; /* Rojo Taiyin */
+            border-bottom-color: #C81E1E;
+            background-color: white;
+        }
+        .conformation-tab-button.active-shaoyin {
+            color: #1D4ED8; /* Azul Shaoyin */
+            border-bottom-color: #1D4ED8;
+            background-color: white;
+        }
+        .conformation-tab-button.active-jueyin {
+            color: #047857; /* Verde Jueyin */
+            border-bottom-color: #047857;
+            background-color: white;
+        }
+
+        /* --- Estilos de Pestañas Internas --- */
+        .tab-button {
+            color: #4B5563;
+            border-bottom: 4px solid transparent;
+            font-weight: 500;
+        }
+        .tab-button-taiyin.active {
+            border-bottom: 4px solid #F87171; /* Rojo Taiyin */
+            color: #1F2937;
+            font-weight: 600;
+        }
+        .tab-button-shaoyin.active {
+            border-bottom: 4px solid #60A5FA; /* Azul Shaoyin */
+            color: #1F2937;
+            font-weight: 600;
+        }
+        .tab-button-jueyin.active {
+            border-bottom: 4px solid #34D399; /* Verde Jueyin */
+            color: #1F2937;
+            font-weight: 600;
+        }
+
+        /* --- Estilos Generales de Tarjetas --- */
+        .content-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            position: relative;
+        }
+        .content-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+        .point-pill {
+            background-color: #FEF3C7;
+            color: #D97706;
+            border-radius: 9999px;
+            padding: 4px 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+        .shoutaiyin { border-left: 4px solid #10B981; }
+        .zutaiyin { border-left: 4px solid #8B5CF6; }
+        .shoushaoyin { border-left: 4px solid #F472B6; }
+        .zushaoyin { border-left: 4px solid #3B82F6; }
+        .shoujueyin { border-left: 4px solid #EC4899; } /* Pericardio */
+        .zujueyin { border-left: 4px solid #10B981; } /* Hígado */
+
+        .detail-item {
+            margin-bottom: 8px;
+            padding: 4px 0;
+            border-bottom: 1px dashed #E5E7EB;
+        }
+        summary {
+            list-style: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] ~ .action-button {
+            display: none;
+        }
+
+        /* --- Estilos de Modal de Reparo --- */
+        .reparo-section {
+            display: grid;
+            gap: 1rem;
+        }
+        .reparo-item {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border-left-width: 4px;
+        }
+        .reparo-item h4 {
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+        }
+        .reparo-item p {
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        .reparo-huesos { background-color: #eef2ff; border-color: #6366f1; }
+        .reparo-huesos h4 { color: #4338ca; }
+        .reparo-muscular { background-color: #f0fdf4; border-color: #22c55e; }
+        .reparo-muscular h4 { color: #15803d; }
+        .reparo-arterial { background-color: #fef2f2; border-color: #ef4444; }
+        .reparo-arterial h4 { color: #b91c1c; }
+        .reparo-venoso { background-color: #eff6ff; border-color: #3b82f6; }
+        .reparo-venoso h4 { color: #1d4ed8; }
+        .reparo-inervacion { background-color: #fffbeb; border-color: #f59e0b; }
+        .reparo-inervacion h4 { color: #b45309; }
+        .reparo-organos { background-color: #fdf2f8; border-color: #db2777; }
+        .reparo-organos h4 { color: #9d174d; }
+        .reparo-cutaneo { background-color: #fafaf9; border-color: #78716c; }
+        .reparo-cutaneo h4 { color: #44403c; }
+        .reparo-default { background-color: #f3f4f6; border-color: #6b7280; }
+        .reparo-default h4 { color: #4b5563; }
+
+        /* --- Estilos de Modal de Comentario --- */
+        .modal-content {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left-width: 4px;
+        }
+        .modal-content-taiyin {
+            background-color: #f0fdfa; /* mint-50 */
+            border-color: #14b8a6; /* teal-500 */
+        }
+        .modal-content-taiyin p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #0f766e; /* teal-700 */
+        }
+        .modal-content-shaoyin {
+            background-color: #f0f9ff; /* sky-50 */
+            border-color: #0ea5e9; /* sky-500 */
+        }
+        .modal-content-shaoyin p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #0369a1; /* sky-700 */
+        }
+        .modal-content-jueyin {
+            background-color: #f0fdf4; /* green-50 */
+            border-color: #10b981; /* emerald-500 */
+        }
+        .modal-content-jueyin p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #065f46; /* emerald-700 */
+        }
+
+        /* --- Estilos de Diagnóstico --- */
+        .diagnosis-checkbox-taiyin {
+            margin-right: 0.5rem;
+            accent-color: #F87171;
+        }
+        .diagnosis-checkbox-shaoyin {
+            margin-right: 0.5rem;
+            accent-color: #60A5FA;
+        }
+        .diagnosis-checkbox-jueyin {
+            margin-right: 0.5rem;
+            accent-color: #34D399;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+<div class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden">
+    
+    <!-- Título Principal de la App -->
+    <header class="bg-gradient-to-r from-gray-700 to-gray-900 p-6 text-white text-center">
+        <h1 class="text-3xl font-bold tracking-tight">Esquemas de Conformaciones de MTC</h1>
+        <p class="text-gray-300 mt-1">Taiyin y Shaoyin</p>
+    </header>
+
+    <!-- Navegación Principal (Conformaciones) -->
+    <div class="border-b border-gray-200 bg-gray-100">
+        <nav class="flex justify-center space-x-4 p-4" id="conformation-tabs">
+            <button class="conformation-tab-button text-lg font-semibold px-6 py-3 rounded-t-lg active-taiyin" onclick="showConformation('taiyin', this)">
+                Esquema Taiyin
+            </button>
+            <button class="conformation-tab-button text-lg font-semibold px-6 py-3 rounded-t-lg" onclick="showConformation('shaoyin', this)">
+                Esquema Shaoyin
+            </button>
+            <button class="conformation-tab-button text-lg font-semibold px-6 py-3 rounded-t-lg" onclick="showConformation('jueyin', this)">
+                Esquema Jueyin
+            </button>
+        </nav>
+    </div>
+
+    <!-- ===== CONTENIDO TAIYIN ===== -->
+    <div id="conformation-taiyin" class="conformation-content">
+        <header class="bg-gradient-to-r from-red-500 to-red-600 p-6 text-white">
+            <h1 class="text-3xl font-bold tracking-tight">Esquema Taiyin: Puntos Shu Antiguos</h1>
+            <p class="text-red-200 mt-1">Canales Pulmón (Shou Taiyin) y Bazo (Zu Taiyin)</p>
+        </header>
+
+        <div class="border-b border-gray-200">
+            <nav class="flex flex-wrap space-x-2 p-4" id="channel-tabs-taiyin">
+                <button class="tab-button tab-button-taiyin px-4 py-2 text-sm md:text-base active" onclick="showChannelTaiyin('shou_taiyin')">
+                    Shou Taiyin (Pulmón)
+                </button>
+                <button class="tab-button tab-button-taiyin px-4 py-2 text-sm md:text-base" onclick="showChannelTaiyin('zu_taiyin')">
+                    Zu Taiyin (Bazo)
+                </button>
+                 <button class="tab-button tab-button-taiyin px-4 py-2 text-sm md:text-base" onclick="showChannelTaiyin('puntos_shu_antiguos_taiyin')">
+                    Puntos Shu Antiguos
+                </button>
+                <button class="tab-button tab-button-taiyin px-4 py-2 text-sm md:text-base" onclick="showChannelTaiyin('fisiologia_taiyin')">
+                    Fisiología Taiyin
+                </button>
+                 <button class="tab-button tab-button-taiyin px-4 py-2 text-sm md:text-base" onclick="showChannelTaiyin('diagnostico_taiyin')">
+                    Diagnóstico
+                </button>
+            </nav>
+        </div>
+
+        <div class="p-6">
+            <div id="shou_taiyin" class="channel-content-taiyin">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10m0 0h16m0 0V7m0 0H4m16 0L12 4l-8 3m16 0l-8 3m-8-3l8 3" />
+                    </svg>
+                    Canal Shou Taiyin (Pulmón)
+                </h2>
+                <div id="pulmon-points" class="space-y-4">
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoutaiyin">
+                        <span class="point-pill" style="background-color: #fef2f2; color: #b91c1c;">P1 (Zhongfu)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Mu de Pulmón</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Zhongfu (Víscera Central).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el primer espacio intercostal, a 6 cun lateral de la línea media y a 1 cun por debajo del punto P2 (Yunmen).</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Como punto Mu (alarma) del Pulmón, refleja directamente el estado del Qi del Pulmón y es crucial para tratar afecciones pulmonares agudas y crónicas, especialmente las de tipo Exceso.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Dispersa y desciende el Qi de Pulmón, alivia la tos y la disnea, transforma la flema, aclara el calor del Jiao Superior y regula los pasajes del agua.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Asma, tos, bronquitis, neumonía, dolor torácico, opresión en el pecho.</p>
+                                </div>
+                            </details>
+                            <button id="p1-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: P1 (Zhongfu)",
+                                    "content": {
+                                        "Referencias Óseas": "Se ubica sobre el primer espacio intercostal. La clavícula está superiormente, el proceso coracoides de la escápula lateralmente, y el manubrio esternal medialmente.",
+                                        "Componente Muscular": "Localizado en el borde lateral del músculo pectoral menor. Superiormente se relaciona con el pectoral mayor y lateralmente con el deltoides anterior. En profundidad, yace sobre el serrato anterior y los intercostales externos.",
+                                        "Irrigación Arterial": "Ramas de la arteria torácica superior (rama de la arteria axilar), arteria torácica interna (con sus ramas intercostales) y arterias pectorales (ramas de la arteria toracoacromial).",
+                                        "Inervación": "Ramas del plexo braquial (nervios pectorales medial y lateral), el primer nervio intercostal y el nervio supraclavicular (del plexo cervical).",
+                                        "Relaciones Orgánicas": "Profundamente se encuentra el ápice del lóbulo superior del pulmón, separado por la pleura parietal y la fascia endotorácica.",
+                                        "Estructuras Cutáneas": "Piel de la región infraclavicular lateral, tejido subcutáneo y la fascia superficial pectoral."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button id="p1-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: P1 (Zhongfu)",
+                                    "content": "P1-Zhongfu es el punto Mu-Alarma del Pulmón, un lugar donde el Qi del canal se reúne. El Dr. Wang enfatiza su importancia en el diagnóstico a través de la palpación. Una sensibilidad o induración en esta área a menudo indica una patología del canal Taiyin, tanto de exceso (opresión torácica, tos con flema) como de deficiencia (respiración corta, voz débil). Clínicamente, lo utiliza para descender el Qi de Pulmón rebelde y aliviar la opresión en el pecho, a menudo en combinación con puntos distales como P9-Taiyuan para tonificar o P5-Chize para dispersar."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoutaiyin">
+                        <span class="point-pill" style="background-color: #D1FAE5; color: #059669;">P11 (Shaoshang)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Pozo y Punto Madera</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Shaoshang (Pequeña Nota Shan).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el pulgar, 0.1 cun desde el ángulo radial de la uña.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi brota en el canal de manera incipiente. La Madera genera expansión y movimiento, permitiendo desbloquear la superficie y movilizar el Qi súbitamente. Asociado a reanimar y dispersar plenitud en la parte más distal. Punto Fantasma de Sun Si Miao.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Dispersa calor de Pulmón y garganta; libera la superficie; abre los orificios y reanima. Calma el espíritu. Reduce la presión arterial alta.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Faringitis aguda, amigdalitis, fiebre alta, epistaxis por calor, síncope (reanimación). Hipertensión.</p>
+                                </div>
+                            </details>
+                            <button id="p11-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: P11 (Shaoshang)",
+                                    "content": {
+                                        "Referencias Óseas": "La estructura ósea fundamental es la falange distal del pulgar, que es proporcionalmente más ancha y robusta que las de otros dedos.",
+                                        "Irrigación Arterial": "Proporcionada por las arterias digitales palmares propias del pulgar (ramas de la arteria princeps pollicis). Estas irrigan las caras palmar y dorsal, y forman un plexo vascular subungueal especializado.",
+                                        "Drenaje Venoso": "Incluye venas digitales palmares y dorsales que convergen en los arcos venosos palmares. El plexo venoso subungueal es clave en la termorregulación."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button id="p11-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: P11 (Shaoshang)",
+                                    "content": "El Dr. Wang lo considera un punto de emergencia. Como punto Jing-Pozo, trata la plenitud debajo del corazón y las enfermedades del Espíritu. Su principal aplicación clínica es para el dolor de garganta agudo y la amigdalitis por calor-viento. La técnica clásica de sangrar el punto es, en su experiencia, extremadamente efectiva para reducir la inflamación y el dolor de forma casi inmediata. También es un punto de reanimación clave en casos de desmayo o pérdida de conciencia."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoutaiyin">
+                        <span class="point-pill" style="background-color: #FEE2E2; color: #DC2626;">P10 (Yuji)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Ying-Manantial y Punto Fuego</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Yuji (Borde del Pez).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el pulgar, en el punto medio del borde palmar del primer metacarpiano (Borde de Pez).</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi aumenta como un manantial. El Fuego dinamiza y expande con fuerza, eliminando calor del canal. Asociado a la regulación del calor interno, inflamaciones y febrículas. Fortalece el Corazón.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Aclara calor de Pulmón; humedece garganta; calma tos seca. Reduce la fiebre y controla la sudoración. Dirige el Qi a contracorriente.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Tos irritativa, faringitis, afonía aguda, sed intensa en enfermedades febriles. Amigdalitis aguda, hinchazón y dolor de garganta. Dolor de brazo con espasmos.</p>
+                                </div>
+                            </details>
+                            <button id="p10-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: P10 (Yuji)",
+                                    "content": {
+                                        "Referencias Óseas": "El primer metacarpiano y los huesos del carpo adyacentes (trapecio).",
+                                        "Componente Muscular": "En estrecha relación con los músculos intrínsecos de la eminencia tenar, siendo el más superficial el músculo abductor pollicis brevis.",
+                                        "Irrigación Arterial": "Ramas de la arteria radial, principalmente la arteria princeps pollicis y la rama palmar superficial de la arteria radial.",
+                                        "Inervación": "Inervado por la rama recurrente del nervio mediano."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button id="p10-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: P10 (Yuji)",
+                                    "content": "Siendo un punto Ying-Manantial (Fuego), su acción principal es aclarar el calor del canal y del Zang-Fu. El Dr. Wang lo recomienda para la tos por calor, la garganta seca y la fiebre. Destaca que la palpación de la eminencia tenar (el &apos;pez&apos;) puede revelar un enrojecimiento o calor excesivo en pacientes con calor en el Pulmón, lo que confirma la indicación de este punto."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoutaiyin">
+                        <span class="point-pill" style="background-color: #FCD34D; color: #B45309;">P9 (Taiyuan)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Shu-Arroyo, Yuan-Fuente y Tierra</p>
+                         <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Taiyuan (Gran Abismo).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la cara ventral de la muñeca, a la altura del espacio articular de la muñeca, en la cara radial de la arteria radial y cubital al tendón del músculo abductor largo del pulgar.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi fluye de manera amplia y estable, como arroyo. La Tierra estabiliza y transforma, regulando líquidos y energía. Como Yuan-fuente conecta al Yuan Qi y como Hui de vasos armoniza circulación.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Tonifica Qi y Yin de Pulmón; transforma flema; regula vasos; estabiliza respiración. Dispersa el Pulmón y dirige el Qi a contracorriente hacia abajo.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Asma crónica, tos con flema, voz débil, palpitaciones, dolor de muñeca. Trombosis, taquicardia. Deficiencia Bazo-Estómago.</p>
+                                </div>
+                            </details>
+                            <button id="p9-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: P9 (Taiyuan)",
+                                    "content": {
+                                        "Referencias Óseas": "Proceso estiloides del radio y hueso escafoides.",
+                                        "Componente Muscular": "Lateralmente se encuentra el músculo abductor largo del pulgar y medialmente el tendón del músculo flexor carpi radialis.",
+                                        "Irrigación Arterial": "La arteria radial es la referencia principal, muy superficial y palpable en este punto. Emite la rama palmar superficial y ramas carpales.",
+                                        "Inervación": "Ramas del nervio cutáneo lateral del antebrazo y el ramo superficial del nervio radial."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button id="p9-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: P9 (Taiyuan)",
+                                    "content": "El Dr. Wang considera este punto como el más importante para tonificar el Pulmón. Como punto Yuan-Fuente, moviliza el Yuan Qi para fortalecer la función del órgano. Al ser también el punto Hui-Reunión de los vasos, lo utiliza para tratar trastornos donde la circulación de Qi y Sangre está comprometida, como en casos de pulso débil, manos frías y problemas circulatorios. La palpación del pulso en P9 es, para él, una herramienta diagnóstica fundamental."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoutaiyin">
+                        <span class="point-pill" style="background-color: #E5E7EB; color: #4B5563;">P8 (Jingqu)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Río y Punto Metal</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Jingqu (Canal Quebrado).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> Lateral a la arteria radial, 1 cun proximal desde el espacio ventral de la articulación de la muñeca (P9).</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi fluye ancho como río. El Metal concentra, regula y clarifica, especialmente en la voz y respiración. Asociado al control del tono y la comunicación del Qi del Pulmón. Los puntos Jing-Río tratan jadeo/tos con escalofríos/fiebre.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Facilita descenso del Qi de Pulmón; regula tos y voz. Dispersa el Qi a contracorriente.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Asma por contraflujo, afonía funcional, dolor del antebrazo. Bronquitis aguda, resfriado con tos y jadeo. Fiebre que varía (malaria).</p>
+                                </div>
+                            </details>
+                            <button id="p8-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: P8 (Jingqu)",
+                                    "content": {
+                                        "Referencias Óseas": "Porción distal del radio.",
+                                        "Componente Muscular": "Ubicado entre el músculo braquiorradial (lateral) y el músculo flexor carpi radialis (medial). En el plano profundo se localiza el músculo pronator quadratus.",
+                                        "Irrigación Arterial": "La arteria radial, que se sitúa inmediatamente medial al punto y es fácilmente palpable.",
+                                        "Inervación": "Ramas del nervio cutáneo lateral del antebrazo y el ramo superficial del nervio radial."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button id="p8-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: P8 (Jingqu)",
+                                    "content": "Como punto Jing-Río, trata las alteraciones de la voz y la tos. El Dr. Wang lo relaciona con la función del Pulmón de gobernar el Qi y la respiración. Lo utiliza en casos donde el Qi del Pulmón no puede descender, causando tos, disnea y una sensación de opresión en el pecho. Al ser el punto horadado del canal (Metal), su punción puede tener un efecto regulador muy directo sobre el Qi del Pulmón."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoutaiyin">
+                        <span class="point-pill">P7 (Lieque)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Luo</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Lieque (Secuencia Rota).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la cara radial del antebrazo, directamente encima de la apófisis estiloides del radio, aproximadamente a 1.5 cun proximal desde el espacio articular de la muñeca, en un surco en forma de V (en el borde entre el músculo braquiorradial y el tendón del abductor largo del pulgar).</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Luo-Conexión y Punto Confluente del Ren Mai. La bifurcación del canal en este punto permite la conexión con el canal Yang (IG). Es uno de los 'cuatro puntos de comando' para la cabeza y la nuca (Gao Wu).</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Libera el exterior y pacifica el viento. Regula la dispersión y descenso del Pulmón. Regula los pasajes de agua. Regula el flujo de Qi en el Ren Mai.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Trastornos de cabeza y nuca, opresión torácica. Trastornos urinarios, dolor genital, retención de loquios. Dolor en la articulación del pulgar.</p>
+                                </div>
+                            </details>
+                            <button id="p7-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: P7 (Lieque)",
+                                    "content": {
+                                        "Referencias Óseas": "Radio, específicamente sobre el proceso estiloides del radio.",
+                                        "Componente Muscular": "Se sitúa en el espacio intermuscular entre el músculo braquiorradial y el músculo abductor largo del pulgar.",
+                                        "Irrigación Arterial": "La arteria radial discurre medialmente al punto.",
+                                        "Inervación": "Ramas superficiales del nervio radial y del nervio cutáneo lateral del antebrazo."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button id="p7-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: P7 (Lieque)",
+                                    "content": "El Dr. Wang subraya la triple función de este punto: 1) Como punto Luo-Conexión, trata desequilibrios entre Pulmón e Intestino Grueso. 2) Como punto de apertura del Ren Mai, influye en la garganta, pecho y útero. 3) Como punto de comando para la cabeza y nuca, es su elección principal para rigidez de cuello y dolor occipital. Lo considera uno de los puntos más versátiles y lo palpa en busca de cambios para diagnosticar el estado del Jiao Superior y la superficie del cuerpo."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoutaiyin">
+                        <span class="point-pill">P6 (Kongzui)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Xi-Hendidura</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Kongzui (Agujero Máximo).</p>
+                                    <p><strong>Localización:</strong> En la línea que une P5 (en el pliegue del codo) y P9 (en la muñeca), 5 cun distal desde P5 o 7 cun proximal desde P9.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi se concentra en hendidura. Útil en cuadros agudos y dolorosos. En canales Yin, ligado a trastornos de la sangre.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Aclara el calor y la sequedad, detiene el sangrado. Desobstruye el Qi a lo largo del canal. Fortalece la piel y la superficie del cuerpo.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Enfermedades febriles sin sudoración. Tos aguda, sibilancias, pérdida de voz. Sangrado del Pulmón (hemoptisis). Dolor de codo/brazo, dificultad para flexionar dedos.</p>
+                                </div>
+                            </details>
+                            <button id="p6-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: P6 (Kongzui)",
+                                    "content": {
+                                        "Referencias Óseas": "El radio se encuentra en el plano profundo.",
+                                        "Componente Muscular": "Se ubica en el borde entre el músculo braquiorradial (lateral) y el músculo flexor carpi radialis (medial). Profundamente se encuentran los músculos flexores de los dedos y del pulgar.",
+                                        "Irrigación Arterial": "La arteria radial es la principal fuente de irrigación en esta zona.",
+                                        "Inervación": "La inervación sensitiva cutánea está mediada principalmente por el nervio cutáneo lateral del antebrazo, rama terminal del nervio musculocutáneo."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button id="p6-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: P6 (Kongzui)",
+                                    "content": "Como punto Xi-Hendidura, el Dr. Wang lo utiliza para tratar condiciones agudas del canal y del Zang-Fu asociado. Es su punto de elección para ataques agudos de asma, tos severa y, especialmente, para hemoptisis (tos con sangre), ya que los puntos Xi de los canales Yin tienen una afinidad por los trastornos de la sangre. También lo encuentra efectivo para el dolor agudo que sigue el trayecto del canal de Pulmón."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoutaiyin">
+                        <span class="point-pill" style="background-color: #BFDBFE; color: #1D4ED8;">P5 (Chize)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto He-Mar y Punto Agua</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Chize (Pantano de Un Pie de Longitud).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el pliegue del codo, en la cara radial del tendón del bíceps.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi alcanza máxima profundidad como mar. El Agua drena hacia lo interno y regula contraflujo y órganos. En Pulmón, drena flema-calor y regula vías de agua. Es el Punto Hijo (Agua) de un canal de Metal (se usa para drenar el exceso).</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Desciende Qi rebelde; elimina flema-calor; desbloquea opresión torácica; regula vías de agua. Calma los tendones.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Asma con flema espesa, tos productiva, hemoptisis, edema, dolor de codo. Amigdalitis, neumonía, gastritis aguda, hipertensión.</p>
+                                </div>
+                            </details>
+                            <button id="p5-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: P5 (Chize)",
+                                    "content": {
+                                        "Referencias Óseas": "Húmero (epicóndilo lateral), cabeza y cuello del radio.",
+                                        "Componente Muscular": "La referencia principal es el tendón del bíceps braquial (el punto está en su borde radial). Lateralmente se relaciona con el músculo braquiorradial y medialmente con el músculo pronador redondo.",
+                                        "Irrigación Arterial": "La arteria braquial transcurre medialmente al punto. La arteria radial recurrente también contribuye.",
+                                        "Inervación": "Se relaciona con el nervio mediano (medial), ramas del nervio radial y el nervio cutáneo lateral del antebrazo."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button id="p5-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: P5 (Chize)",
+                                    "content": "Siendo el punto He-Mar del canal, trata la contracorriente del Qi (tos, asma) y los trastornos del Zang-Fu. El Dr. Wang lo destaca para eliminar el calor y la flema del Pulmón. Explica que, al ser el punto Agua en un canal Metal, tiene una potente acción de drenaje y descenso. Clínicamente lo usa para bronquitis con flema amarilla y pegajosa, y también para problemas de piel como el eccema, aplicando la teoría de que &apos;el Pulmón gobierna la piel y el pelo&apos;."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="zu_taiyin" class="channel-content-taiyin hidden">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21v-8.25M15.75 21v-3.889M8.25 21v-3.889m4.5-8.222V7.5M12 21a9 9 0 110-18 9 9 0 010 18z" />
+                    </svg>
+                    Canal Zu Taiyin (Bazo)
+                </h2>
+                <div id="bazo-points" class="space-y-4">
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #D1FAE5; color: #059669;">B1 (Yinbai)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Pozo y Punto Madera</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Yinbai (Blanco Oculto).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el dedo pulgar del pie, a 0.1 cun del ángulo medial de la uña.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi inicial brota en el canal. La Madera moviliza y expande, útil para iniciar el movimiento y contener Sangre en plenitudes súbitas. Punto Fantasma.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Contiene la Sangre; detiene hemorragias; regula el Bazo. Elimina la humedad. Calma el espíritu y despierta el cerebro.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Metrorragia, epistaxis, hematuria, coma superficial por colapso. Trastornos digestivos. Sueños intranquilos, manía-abstinencia.</p>
+                                </div>
+                            </details>
+                            <button id="b1-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B1 (Yinbai)",
+                                    "content": {
+                                        "Referencias Óseas": "Falange distal del dedo gordo del pie.",
+                                        "Componente Muscular": "Fibras terminales del músculo flexor largo del hallux y expansiones aponeuróticas del extensor largo del hallux.",
+                                        "Irrigación Arterial": "Ramas de la primera arteria metatarsiana dorsal y la arteria digital plantar medial.",
+                                        "Inervación": "Nervio digital plantar propio (rama del nervio tibial) y nervio digital dorsal (rama del nervio fibular profundo)."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b1-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B1 (Yinbai)",
+                                    "content": "Como punto Jing-Pozo, B1 es un punto dinámico que el Dr. Wang utiliza para regular la función del Bazo de gobernar la sangre. Es su punto principal para detener hemorragias causadas por deficiencia de Bazo, como el sangrado uterino excesivo. A menudo recomienda la moxibustión en este punto para fortalecer su efecto hemostático y de calentamiento."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #FEE2E2; color: #DC2626;">B2 (Dadu)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Ying-Manantial y Punto Fuego</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Dadu (Gran Capital).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la cara medial del dedo pulgar del pie, distal con respecto a la primera articulación metatarsofalángica, en la unión del eje y la base de la falange proximal.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi aumenta. El Fuego dinamiza y dispersa calor-humedad del centro. Relacionado con febrículas digestivas e inflamaciones abdominales.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Aclara calor-humedad de Bazo/Estómago; calma dolor abdominal. Fortalece y suplementa el Bazo. Trata el frío de contraflujo reverso de las extremidades.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Diarrea por calor-humedad, gastralgias, boca pegajosa. Enfermedades digestivas. Lumbago agudo y crónico. Fístulas sangrantes.</p>
+                                </div>
+                            </details>
+                            <button id="b2-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B2 (Dadu)",
+                                    "content": {
+                                        "Referencias Óseas": "Falange proximal del dedo gordo, cerca de la articulación metatarsofalángica.",
+                                        "Componente Muscular": "Borde medial del músculo abductor del hallux.",
+                                        "Irrigación Arterial": "Ramas de la arteria plantar medial.",
+                                        "Inervación": "Nervio digital plantar propio."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b2-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B2 (Dadu)",
+                                    "content": "Como punto Ying-Manantial, B2 aclara el calor del canal. El Dr. Wang lo destaca para tratar el calor-humedad en el Jiao Medio, que se manifiesta como distensión abdominal, heces malolientes o sensación de pesadez. También es un punto importante para el tratamiento de la gota, especialmente en su fase aguda, ya que el calor y la humedad son factores clave en esta patología."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #FCD34D; color: #B45309;">B3 (Taibai)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Shu-Arroyo, Yuan-Fuente y Tierra</p>
+                         <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Taibai (Gran Blanco).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la cara medial del pie, en la depresión proximal a la cabeza del primer metatarsiano, en el borde de la piel "roja y blanca".</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi se estabiliza como arroyo. La Tierra transforma y transporta, por lo que regula digestión y tonifica el centro. Como Yuan-fuente fortalece el eje central.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Tonifica Bazo; resuelve humedad; regula heces y energía. Regula el Bazo y el Estómago. Calma el Shen.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Diarrea crónica, fatiga, distensión posprandial, pesadez de extremidades. Fístula anal, estreñimiento. Mala digestión (en niños). Trastornos mentales.</p>
+                                </div>
+                            </details>
+                            <button id="b3-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B3 (Taibai)",
+                                    "content": {
+                                        "Referencias Óseas": "Cabeza y base del primer hueso metatarsiano.",
+                                        "Componente Muscular": "En la inserción del músculo abductor del hallux.",
+                                        "Irrigación Arterial": "Red arterial formada por la arteria dorsal del pie y la arteria plantar medial.",
+                                        "Inervación": "Ramas del nervio safeno y el nervio plantar medial."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b3-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B3 (Taibai)",
+                                    "content": "Al ser el punto Yuan-Fuente y Shu-Arroyo (Tierra) de un canal de Tierra, el Dr. Wang lo considera el punto más importante para tonificar el Qi del Bazo. Es su punto de elección para tratar la diarrea por deficiencia, la fatiga, la falta de apetito y la distensión abdominal. Enfatiza que la palpación de este punto a menudo revela una depresión o debilidad en casos de deficiencia de Bazo."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #FBBF24; color: #92400E;">B4 (Gongsun)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Luo, Punto de Apertura del Chong Mai</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Gongsun (Nieto y Abuelo).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la depresión distal a la base del primer metatarsiano, en el borde de la piel "roja y blanca" (Planta/dorso del pie).</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Conecta Bazo con Estómago y con Chong Mai ("mar de la sangre"). Regula Sangre y Qi central para sostener digestión y reproducción.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Armoniza Bazo-Estómago; regula menstruación y sangre. Fortalece el Bazo y regula el Qi estancado. Calma el Shen.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Epigastralgia, vómitos, dismenorrea, metrorragia, náuseas en embarazo. Dolor abdominal superior/inferior. Cólera, diarrea. Trastornos mentales.</p>
+                                </div>
+                            </details>
+                            <button id="b4-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B4 (Gongsun)",
+                                    "content": {
+                                        "Referencias Óseas": "Base del primer hueso metatarsiano.",
+                                        "Componente Muscular": "En el borde inferior del músculo abductor del hallux.",
+                                        "Irrigación Arterial": "Ramas de la arteria plantar medial.",
+                                        "Inervación": "Nervio safeno y nervio plantar medial."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b4-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B4 (Gongsun)",
+                                    "content": "El Dr. Wang valora este punto por su doble acción: como punto Luo, armoniza la relación Bazo-Estómago, siendo excelente para el dolor epigástrico y las náuseas. Como punto de apertura del Chong Mai (Mar de la Sangre), tiene un profundo efecto sobre el sistema ginecológico y el Corazón. Lo combina frecuentemente con PC6-Neiguan para tratar una amplia gama de problemas de pecho, abdomen y corazón."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #E5E7EB; color: #4B5563;">B5 (Shangqiu)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Río y Punto Metal</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Shangqiu (Montículo del Comerciante).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la depresión anterior e inferior al maléolo medial. A medio camino entre la prominencia máxima del maléolo medial y el tubérculo del hueso navicular.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi fluye amplio. El Metal regula y concentra, permitiendo drenar excesos de humedad de la Tierra (es el Punto Hijo, se usa para drenar el exceso).</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Seca humedad; regula digestión; moviliza Qi central. Drena los patrones de exceso y calor-humedad. Fortalece el Bazo y el Qi del Jiao Medio.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Náuseas, diarrea/estreñimiento alternante, dolor de tobillo. Pesadez corporal, distensión abdominal, ictericia. Artritis (obstrucción dolorosa por humedad).</p>
+                                </div>
+                            </details>
+                            <button id="b5-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B5 (Shangqiu)",
+                                    "content": {
+                                        "Referencias Óseas": "Entre el maléolo medial y el hueso navicular.",
+                                        "Componente Muscular": "Entre los tendones del tibial anterior y el tibial posterior.",
+                                        "Irrigación Arterial": "Ramas de la arteria maleolar anterior medial.",
+                                        "Inervación": "Rama del nervio safeno y nervio cutáneo dorsal medial."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b5-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B5 (Shangqiu)",
+                                    "content": "Como punto Jing-Río (Metal) en un canal de Tierra, el Dr. Wang lo utiliza para drenar el exceso de humedad del Bazo, siguiendo la relación madre-hijo. Es un punto clave para tratar la pesadez corporal, el edema y el dolor articular agravado por la humedad. También lo encuentra efectivo para el dolor y la hinchazón del tobillo."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #D1D5DB; color: #4B5563;">B6 (Sanyinjiao)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Cruce de 3 Yin de pierna</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Sanyinjiao (Intersección Triple del Yin).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> 3 cun proximal a la prominencia máxima del maléolo medial, en el borde posterior de la cresta medial de la tibia.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Integra Bazo (transforma), Hígado (regula flujo) y Riñón (almacena esencia). Fundamento: unión de funciones Yin.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Tonifica Bazo y Riñón; armoniza Hígado; regula menstruación y el Calentador Inferior. Calma el espíritu.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Dismenorrea, infertilidad, insomnio, polaquiuria, diarrea. Trastornos genitourinarios y ginecológicos.</p>
+                                </div>
+                            </details>
+                            <button id="b6-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B6 (Sanyinjiao)",
+                                    "content": {
+                                        "Referencias Óseas": "Borde posterior de la tibia.",
+                                        "Componente Muscular": "Posterior al músculo tibial posterior, y anterior al músculo flexor largo de los dedos.",
+                                        "Irrigación Arterial": "Arteria y vena tibial posterior.",
+                                        "Inervación": "Nervio safeno y nervio tibial."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b6-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B6 (Sanyinjiao)",
+                                    "content": "El Dr. Wang considera este punto uno de los más importantes en todo el cuerpo por su capacidad para influir en los tres canales Yin de la pierna (Bazo, Hígado y Riñón). Lo utiliza ampliamente para casi cualquier trastorno ginecológico, digestivo o urinario. Es un punto clave para nutrir el Yin y la Sangre, y la palpación de esta área puede revelar mucho sobre el estado del Jiao Inferior."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #D1D5DB; color: #4B5563;">B8 (Diji)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Xi-Hendidura</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Diji (Eje de la Tierra / Pivote de la Tierra).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> 3 cun distal a la unión de la diáfisis y el cóndilo medial de la tibia (B9), en el borde posterior de la cresta medial de la tibia.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi se concentra en hendidura, útil en cuadros agudos. En Bazo ligado a Sangre y útero.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Regula menstruación; calma dolor agudo; mueve Sangre. Armoniza el Bazo y resuelve la humedad.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Dismenorrea aguda, sangrado súbito, dolor abdominal espasmódico. Distensión abdominal, edema, leucorrea.</p>
+                                </div>
+                            </details>
+                            <button id="b8-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B8 (Diji)",
+                                    "content": {
+                                        "Referencias Óseas": "Borde posterior de la tibia.",
+                                        "Componente Muscular": "Entre el borde medial del músculo sóleo y el músculo flexor largo de los dedos.",
+                                        "Irrigación Arterial": "Ramas de la arteria tibial posterior.",
+                                        "Inervación": "Nervio safeno."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b8-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B8 (Diji)",
+                                    "content": "Como punto Xi-Hendidura del canal del Bazo, el Dr. Wang lo utiliza principalmente para el dolor agudo y los trastornos de la sangre relacionados con el Bazo. Es su punto de elección para la dismenorrea aguda (dolor menstrual) y el sangrado uterino anormal, ya que puede regular rápidamente el flujo de Qi y Sangre en el Jiao Inferior."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #BFDBFE; color: #1D4ED8;">B9 (Yinlingquan)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto He-Mar y Punto Agua</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Yinlingquan (Manantial del Túmulo del Yin / Fuente de la Colina Yin).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> Con la rodilla flexionada, en una depresión distal al cóndilo medial de la tibia, en la unión de la diáfisis y el cóndilo medial.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El Qi es profundo como mar. El Agua regula líquidos y drena humedad del centro. Es el Punto maestro para la humedad.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Drena humedad; mejora diuresis; armoniza Bazo y Riñón. Trata el Qi de contracorriente. Regula el Bazo-Estómago.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Edema, diarrea por humedad, dolor de rodilla. Micción difícil, incontinencia urinaria, ascitis. Hinchazón y plenitud (corazón, pecho, abdomen). Diabetes, falla renal.</p>
+                                </div>
+                            </details>
+                            <button id="b9-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B9 (Yinlingquan)",
+                                    "content": {
+                                        "Referencias Óseas": "Borde posterior del cóndilo medial de la tibia.",
+                                        "Componente Muscular": "En la inserción inferior de los músculos sartorio y grácil, posterior al músculo gastrocnemio.",
+                                        "Irrigación Arterial": "Arteria genicular descendente.",
+                                        "Inervación": "Rama del nervio safeno."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b9-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B9 (Yinlingquan)",
+                                    "content": "El Dr. Wang se refiere a este punto como el &apos;punto maestro de la humedad&apos;. Al ser el punto He-Mar (Agua) del canal de Bazo (Tierra), tiene una afinidad especial por resolver la acumulación de fluidos. Lo utiliza para cualquier condición causada por humedad: edema, diarrea, flujo vaginal, pesadez en las extremidades o una capa de lengua gruesa y grasosa. La sensibilidad a la palpación en B9 es un signo diagnóstico clave de retención de humedad."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #FBCFE8; color: #9D174D;">B10 (Xuehai)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Mar de la Sangre</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Xuehai (Mar de Sangre).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> Con la rodilla flexionada, 2 cun proximal y ligeramente medial desde el borde medial superior de la rótula, en una depresión del músculo vasto medial.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Depósito de Sangre. Fundamento: enfriar, mover y nutrir Sangre, regulando piel y útero.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Mueve y enfría la Sangre; regula menstruación; detiene prurito. Fortalece la sangre.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Urticaria, eccema, acné, metrorragia, amenorrea. Irregularidades menstruales.</p>
+                                </div>
+                            </details>
+                            <button id="b10-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B10 (Xuehai)",
+                                    "content": {
+                                        "Referencias Óseas": "Fémur, 2 cun por encima del borde superomedial de la rótula.",
+                                        "Componente Muscular": "En el vientre del músculo vasto medial.",
+                                        "Irrigación Arterial": "Ramas de la arteria femoral.",
+                                        "Inervación": "Nervio femoral y nervio cutáneo anterior."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b10-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B10 (Xuehai)",
+                                    "content": "Como su nombre indica, es el punto &apos;Mar de la Sangre&apos;. El Dr. Wang lo utiliza para tratar cualquier desequilibrio de la sangre: estancamiento (dolor, coágulos menstruales), calor en la sangre (problemas de piel como eccema o urticaria con enrojecimiento y picor) o deficiencia de sangre (combinado con puntos tonificantes). Es un punto fundamental en ginecología y dermatología."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zutaiyin">
+                        <span class="point-pill" style="background-color: #E5E7EB; color: #4B5563;">B15 (Daheng)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto abdominal</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Daheng (Gran Horizontal).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> 4 cun lateral al centro del ombligo, en la línea mamilar.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Regula Qi de intestinos. Asociado al control de peristalsis y distribución de humedad.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Regula Qi abdominal; alivia distensión; mejora tránsito intestinal. Regula y mueve el Qi en los intestinos.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Estreñimiento, intestino irritable, diarrea funcional. Dolor abdominal y distensión.</p>
+                                </div>
+                            </details>
+                            <button id="b15-reparo-btn" class="text-sm font-bold text-red-500 hover:text-red-700 action-button" 
+                                data-reparo='{
+                                    "title": "Reparo Anatómico: B15 (Daheng)",
+                                    "content": {
+                                        "Componente Muscular": "Sobre el músculo oblicuo externo, con el oblicuo interno y el transverso del abdomen en planos más profundos.",
+                                        "Irrigación Arterial": "Ramas de la arteria epigástrica inferior.",
+                                        "Inervación": "Ramas de los nervios intercostales (T8, T9, T10)."
+                                    }
+                                }'
+                                onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button id="b15-comentario-btn" class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button" 
+                                data-conformation="taiyin"
+                                data-comentario='{
+                                    "title": "Comentarios del Dr. Wang: B15 (Daheng)",
+                                    "content": "Este punto se relaciona con el Intestino Grueso y su función de transporte. El Dr. Wang lo utiliza principalmente para regular los movimientos intestinales, especialmente en casos de estreñimiento por estancamiento de Qi. La palpación en esta área puede revelar tensión o nudos, lo que indica un bloqueo en el tránsito intestinal. Combinado con puntos como E25-Tianshu, puede tener un fuerte efecto regulador sobre el abdomen."
+                                }'
+                                onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="puntos_shu_antiguos_taiyin" class="channel-content-taiyin hidden">
+                 <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.22-6.064h10.44M6.75 6.253L12 3l5.25 3.253M3 10.5l9 5.25 9-5.25M3 10.5v3l9 5.25 9-5.25v-3"/></svg>
+                    Guía Rápida de Puntos Shu Antiguos (Taiyin)
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <thead class="bg-red-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-red-700 uppercase tracking-wider">Categoría Shu</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-red-700 uppercase tracking-wider">Función Principal</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-red-700 uppercase tracking-wider">Movimiento Yin</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-red-700 uppercase tracking-wider">Movimiento Yang</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Pozo (Jing)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Drenan exceso, dispersan estancamiento</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Madera</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Metal</td>
+                            </tr>
+                            <tr class="bg-red-50/50 hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Manantial (Ying)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Despejan calor, nutren Yin y sangre</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Fuego</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Agua</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Arroyo (Shu)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Incrementan Qi, transforman humedad, calientan Yang</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tierra</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Madera</td>
+                            </tr>
+                            <tr class="bg-red-50/50 hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Río (Jing)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Regulan circulación del Qi en el canal</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Metal</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Fuego</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Mar (He)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tratan contraflujo, regulan Qi de órgano</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Agua</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tierra</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="fisiologia_taiyin" class="channel-content-taiyin hidden">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.24a2 2 0 00-1.806.547a2 2 0 00-.547 1.806l.477 2.387a6 6 0 00.517 3.86l.158.318a6 6 0 003.86.517l2.387.477a2 2 0 001.806-.547a2 2 0 00.547-1.806l-.477-2.387a6 6 0 00-.517-3.86l-.158-.318a6 6 0 00-.517-3.86l-.477-2.387a2 2 0 00-.547-1.022zM9 12a3 3 0 100-6 3 3 0 000 6z" /></svg>
+                    Fisiología del Sistema Taiyin
+                </h2>
+                <div class="space-y-6 text-gray-700 leading-relaxed">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">1. Introducción al Sistema Taiyin (Yin Mayor)</h3>
+                        <p>El sistema Taiyin, compuesto por el canal del <strong>Pulmón (Shou Taiyin)</strong> y el del <strong>Bazo (Zu Taiyin)</strong>, es el nivel más externo de los tres sistemas Yin. Su función principal es la <strong>"apertura" (開 Kai)</strong>, actuando como la puerta de entrada para la energía y nutrición postnatal. Es el sistema que conecta directamente el interior del cuerpo con el ambiente externo a través de la respiración (Pulmón) y la digestión (Bazo), transformando aire y alimentos en las sustancias vitales (Qi y Sangre) que nos sostienen.</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                        <h3 class="text-xl font-bold text-red-800 mb-2">2. El Principio de "Apertura" (Kai)</h3>
+                        <p>El clásico Suwen establece: "Taiyin abre, Jueyin cierra y Shaoyin pivotea". La apertura de Taiyin es fundamental: el Bazo "abre" para recibir y transformar la esencia de los alimentos, y el Pulmón "abre" para recibir el Qi del aire. Si esta función falla, el Suwen advierte que "los graneros no pueden transportar". Esto significa que si el Taiyin no se abre, los nutrientes no pueden ser asimilados, generando estancamiento, humedad y deficiencia en todo el sistema.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">3. Eje Central de la Energía Postnatal</h3>
+                        <div class="pl-4 border-l-2 border-gray-200 ml-2 space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Bazo (Zu Taiyin) - La Fuente de la Transformación:</h4>
+                                <p>El Bazo extrae la esencia pura de los alimentos y líquidos (Gu Qi) y, gracias a su Qi ascendente, la envía hacia arriba al Pulmón. Es la raíz de la producción de todo el Qi y la Sangre adquiridos.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Pulmón (Shou Taiyin) - El Maestro del Qi:</h4>
+                                <p>En el pecho, el Pulmón recibe el Gu Qi del Bazo y lo combina con el Qi puro del aire (Qing Qi), formando el <strong>Zong Qi (Qi Pectoral)</strong>. Este Zong Qi, bajo el control del Pulmón, se difunde por todo el cuerpo para nutrir los tejidos y asiste al Corazón en la circulación de la Sangre.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                        <h3 class="text-xl font-bold text-blue-800 mb-2">4. Acoplamiento Biao-Li con Yangming</h3>
+                        <p>Taiyin (Yin) está acoplado con Yangming (Yang - Estómago e Intestino Grueso). Forman el eje central del metabolismo. Mientras Taiyin asciende lo puro, Yangming desciende lo turbio. Un fallo en el ascenso del Bazo (Taiyin) puede causar diarrea, mientras que un fallo en el descenso del Estómago (Yangming) puede provocar náuseas y vómitos. La salud digestiva depende del equilibrio dinámico entre ambos.</p>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                        <h3 class="text-xl font-bold text-yellow-800 mb-2">5. Perspectiva del Dr. Wang Ju-Yi</h3>
+                         <p>El Dr. Wang enfatiza la palpación de los canales Taiyin como herramienta diagnóstica clave. Un canal Taiyin sano debe sentirse suave y elástico. Cambios como frialdad, flacidez o edema pueden indicar deficiencia de Qi y Yang. Por el contrario, calor, tensión o una sensación pegajosa pueden señalar acumulación de calor-humedad. Él ve al Taiyin como el sistema que establece la "constitución" o base material del cuerpo, y su estado determina la capacidad del individuo para nutrirse y mantener la vitalidad.</p>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">6. Resumen de Patologías Comunes del Taiyin</h3>
+                        <p>La disfunción del sistema Taiyin es la raíz de muchas enfermedades, principalmente relacionadas con la <strong>Humedad</strong> y la <strong>Deficiencia de Qi</strong>. Los síntomas comunes incluyen:</p>
+                        <ul class="list-disc list-inside space-y-2 mt-2">
+                            <li><strong>Digestivos:</strong> Falta de apetito, distensión abdominal, heces sueltas, diarrea.</li>
+                            <li><strong>Respiratorios:</strong> Tos con flema abundante, respiración corta, propensión a resfriados.</li>
+                            <li><strong>Generales:</strong> Fatiga, pesadez corporal y de las extremidades, edema, voz débil.</li>
+                            <li><strong>Ginecológicos:</strong> Flujo vaginal excesivo, ciclos menstruales irregulares por deficiencia de Sangre.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="diagnostico_taiyin" class="channel-content-taiyin hidden">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                    Diagnóstico del Sistema Taiyin
+                </h2>
+                <div class="space-y-8 text-gray-700 leading-relaxed">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">1. Diagnóstico por el Pulso</h3>
+                        <div class="space-y-4">
+                            <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-400">
+                                <h4 class="font-semibold text-indigo-800">Posiciones del Pulso Taiyin</h4>
+                                <p>El pulso del sistema Taiyin se palpa en la <strong>muñeca derecha</strong>. La función del Pulmón se refleja en la posición <strong>Cun (distal)</strong>, y la del Bazo en la posición <strong>Guan (media)</strong>. Un pulso Taiyin normal debe ser suave, moderado y sentirse con más claridad en el nivel medio.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">Pulsos Patológicos Comunes en Taiyin:</h4>
+                                <ul id="pulse-findings-taiyin" class="list-none space-y-2">
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-taiyin" value="Pulso Profundo (Chén), Lento (Chí) y Débil (Ruò)"> <strong>Deficiencia de Qi/Yang (Frío por Deficiencia):</strong> Pulso <strong>Profundo (沉 Chén)</strong>, <strong>Lento (迟 Chí)</strong> y <strong>Débil (弱 Ruò)</strong>. Indica falta de fuerza para transportar y transformar.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-taiyin" value="Pulso Resbaladizo (Huá) o Moderado/Lento (Huǎn)"> <strong>Acumulación de Humedad/Flema:</strong> Pulso <strong>Resbaladizo (滑 Huá)</strong> o <strong>Moderado/Lento (缓 Huǎn)</strong>. Sugiere acumulación de flema o humedad.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-taiyin" value="Pulso de Cuerda (Xián) en posición Guan derecha"> <strong>Estancamiento de Qi:</strong> Pulso <strong>de Cuerda (弦 Xián)</strong> en la posición Guan derecha. Indica obstrucción en el Jiao Medio.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-taiyin" value="Pulso Rápido (Shù) y Resbaladizo (Huá)"> <strong>Calor en Taiyin (Calor-Humedad):</strong> Pulso <strong>Rápido (数 Shù)</strong> y <strong>Resbaladizo (滑 Huá)</strong>. Muestra una combinación de calor y fluidos acumulados.</label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">2. Diagnóstico por la Lengua</h3>
+                         <div class="space-y-4">
+                            <div class="bg-pink-50 p-4 rounded-lg border-l-4 border-pink-400">
+                                <h4 class="font-semibold text-pink-800">Zonas de la Lengua para Taiyin</h4>
+                                <p>La punta de la lengua refleja el estado del Jiao Superior (<strong>Pulmón</strong>). El centro de la lengua corresponde al Jiao Medio (<strong>Bazo</strong> y Estómago).</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">Signos Linguales Comunes en Taiyin:</h4>
+                                <ul id="tongue-findings-taiyin" class="list-none space-y-2">
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-taiyin" value="Lengua pálida, hinchada con marcas dentales"> <strong>Deficiencia de Qi de Bazo/Pulmón:</strong> Cuerpo <strong>pálido</strong> e <strong>hinchado</strong>, con <strong>marcas dentales</strong>. Saburra delgada y blanca.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-taiyin" value="Lengua hinchada con saburra blanca, gruesa y grasosa"> <strong>Acumulación de Humedad/Flema:</strong> Lengua muy <strong>hinchada</strong>, pálida, con saburra <strong>blanca, gruesa y grasosa</strong>.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-taiyin" value="Lengua roja en la punta, sin saburra o con grietas"> <strong>Deficiencia de Yin de Pulmón:</strong> Cuerpo <strong>rojo</strong> (especialmente la punta), con poca o ninguna saburra (pelada) y posibles grietas.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-taiyin" value="Saburra amarilla, gruesa y pegajosa en el centro"> <strong>Calor-Humedad en Bazo:</strong> Centro de la lengua con saburra <strong>amarilla, gruesa y pegajosa</strong>.</label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button onclick="generarResumenTaiyin()" class="bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                            ✨ Generar Resumen Clínico Taiyin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONTENIDO JUEYIN ===== -->
+    <div id="conformation-jueyin" class="conformation-content hidden">
+        <header class="bg-gradient-to-r from-emerald-600 to-teal-700 p-6 text-white">
+            <h1 class="text-3xl font-bold tracking-tight">Esquema Jueyin: Puntos Shu Antiguos</h1>
+            <p class="text-emerald-200 mt-1">Canales Pericardio (Shou Jueyin) e Hígado (Zu Jueyin)</p>
+        </header>
+
+        <div class="border-b border-gray-200">
+            <nav class="flex flex-wrap space-x-2 p-4" id="channel-tabs-jueyin">
+                <button class="tab-button tab-button-jueyin px-4 py-2 text-sm md:text-base" onclick="showChannelJueyin('shou_jueyin')">
+                    Shou Jueyin (Pericardio)
+                </button>
+                <button class="tab-button tab-button-jueyin px-4 py-2 text-sm md:text-base" onclick="showChannelJueyin('zu_jueyin')">
+                    Zu Jueyin (Hígado)
+                </button>
+                 <button class="tab-button tab-button-jueyin px-4 py-2 text-sm md:text-base" onclick="showChannelJueyin('puntos_shu_antiguos_jueyin')">
+                    Puntos Shu Antiguos
+                </button>
+                <button class="tab-button tab-button-jueyin px-4 py-2 text-sm md:text-base" onclick="showChannelJueyin('fisiologia_jueyin')">
+                    Fisiología Jueyin
+                </button>
+                 <button class="tab-button tab-button-jueyin px-4 py-2 text-sm md:text-base" onclick="showChannelJueyin('diagnostico_jueyin')">
+                    Diagnóstico
+                </button>
+            </nav>
+        </div>
+
+        <div class="p-6">
+            <!-- Contenido Shou Jueyin (Pericardio) -->
+            <div id="shou_jueyin" class="channel-content-jueyin">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M12 10.77l-4.243-4.243a1 1 0 011.415-1.415L12 8.586l3-3a1 1 0 011.414 1.414L12 10.77z" /></svg>
+                    Canal Shou Jueyin (Pericardio)
+                </h2>
+                <div id="pericardio-points" class="space-y-4">
+                    <!-- PC9 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoujueyin">
+                        <span class="point-pill" style="background-color: #D1FAE5; color: #059669;">PC9 (Zhongchong)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Pozo y Punto Madera</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Zhongchong (Asalto Central).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la punta del dedo medio.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Madera en un canal de Fuego. Despeja el calor del Jiao Superior y reanima.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Despeja el calor del Corazón, reanima, calma el espíritu, beneficia la lengua.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Coma, fiebre alta, insolación, rigidez de la lengua, dolor de pecho.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: PC9 (Zhongchong)","content": {"Referencias Óseas": "Falange distal del dedo medio.","Irrigación Arterial": "Arterias digitales palmares propias.","Inervación": "Nervio digital palmar propio (rama del nervio mediano)."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: PC9 (Zhongchong)","content": "PC9, al igual que C9, es un punto de reanimación. El Dr. Wang lo diferencia al notar que PC9, siendo el canal Jueyin, tiene una conexión más fuerte con el Hígado. Lo usa para despejar el calor extremo que agita tanto el Corazón como el Viento de Hígado, como en convulsiones febriles o insolación severa. Sangrar este punto es la técnica de elección."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- PC8 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoujueyin">
+                        <span class="point-pill" style="background-color: #FEE2E2; color: #DC2626;">PC8 (Laogong)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Ying-Manantial y Punto Fuego</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Laogong (Palacio del Trabajo).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la palma, entre el 2º y 3º metacarpiano, donde la punta del dedo medio toca al cerrar el puño.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Fuego en un canal de Fuego. El punto más potente para despejar el Fuego del Corazón y Pericardio.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Despeja el Fuego del Corazón, calma el espíritu, enfría el calor de la sangre.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Úlceras bucales, manía, ansiedad severa, insolación, vómitos, mal aliento.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: PC8 (Laogong)","content": {"Referencias Óseas": "Cabezas del 2º y 3º hueso metacarpiano.","Componente Muscular": "Aponeurosis palmar, tendones flexores, músculos lumbricales.","Irrigación Arterial": "Arco palmar superficial.","Inervación": "Nervio mediano."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: PC8 (Laogong)","content": "PC8 es el punto principal para el Fuego de Corazón que se manifiesta como úlceras bucales o agitación mental extrema. El Dr. Wang lo diferencia de C8 (Shaofu) al señalar que PC8 trata un fuego más interno y virulento que afecta directamente al Shen (Espíritu), mientras que C8 trata más el calor que se transmite a los órganos del Jiao Inferior (Vejiga, Intestino Delgado). Es un punto central para el Qigong por su capacidad de emitir Qi."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- PC7 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoujueyin">
+                        <span class="point-pill" style="background-color: #FCD34D; color: #B45309;">PC7 (Daling)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Shu-Arroyo, Yuan-Fuente y Tierra</p>
+                         <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Daling (Gran Montículo).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el centro del pliegue de la muñeca, entre los tendones del palmar largo y el flexor radial del carpo.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Hijo (Tierra) de un canal de Fuego. Punto Yuan-Fuente. Punto Fantasma de Sun Si Miao. Calma el Corazón y el Estómago.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Calma el espíritu, armoniza el Estómago, despeja el calor, alivia el dolor de pecho.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Insomnio, ansiedad, palpitaciones, dolor de pecho (angina), vómitos, síndrome del túnel carpiano.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: PC7 (Daling)","content": {"Componente Muscular": "Entre los tendones del músculo palmaris longus y el flexor carpi radialis.","Irrigación Arterial": "Red arterial de la muñeca.","Inervación": "Nervio mediano."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: PC7 (Daling)","content": "PC7, como C7 (Shenmen), es un punto Yuan-Fuente crucial para el Shen. El Dr. Wang los diferencia: C7 (Corazón) trata la deficiencia de sangre y el Yin del Corazón que llevan a la agitación. PC7 (Pericardio), al ser el punto Tierra, tiene una fuerte acción sedante y de drenaje. Lo utiliza para el insomnio y la ansiedad causados por exceso, especialmente por flema-fuego que acosa al Pericardio. También lo destaca por su conexión con el Jiao Medio (Tierra), usándolo para náuseas o vómitos de origen emocional."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- PC5 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoujueyin">
+                        <span class="point-pill" style="background-color: #E5E7EB; color: #4B5563;">PC5 (Jianshi)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Río y Punto Metal</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Jianshi (Intermediario).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> 3 cun proximal a PC7, entre los dos tendones (palmar largo y flexor radial del carpo).</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> El punto más importante del canal para transformar la flema (visible e invisible) que obstruye el Corazón/Pericardio.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Transforma la flema (especialmente flema-calor), calma el espíritu, desciende el Qi rebelde.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Manía, epilepsia, dolor de pecho, náuseas, vómitos, "globo histérico".</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: PC5 (Jianshi)","content": {"Componente Muscular": "Entre los tendones del palmaris longus y el flexor carpi radialis.","Irrigación Arterial": "Arteria interósea anterior.","Inervación": "Nervio mediano, nervio cutáneo antebraquial medial."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: PC5 (Jianshi)","content": "PC5 es el punto maestro para la &#39;flema invisible que obstruye los orificios del Corazón&#39;. El Dr. Wang lo utiliza para trastornos mentales graves como la esquizofrenia o la epilepsia, donde la flema nubla el Shen. También es un punto clave para el dolor de pecho (angina) cuando se debe a estancamiento de flema y sangre. Es un punto de acción muy profunda y potente."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- PC3 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoujueyin">
+                        <span class="point-pill" style="background-color: #BFDBFE; color: #1D4ED8;">PC3 (Quze)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto He-Mar y Punto Agua</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Quze (Pantano Sinuoso).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el pliegue del codo, en el lado ulnar del tendón del bíceps.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Agua en un canal de Fuego. Despeja el calor-humedad del Jiao Superior y Medio.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Enfría el calor de la sangre, detiene el sangrado, armoniza el Estómago, calma los temblores.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Vómitos por calor, gastroenteritis aguda, insolación, temblores (ej. Parkinson).</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: PC3 (Quze)","content": {"Componente Muscular": "Lado ulnar (medial) del tendón del bíceps braquial.","Irrigación Arterial": "Arteria braquial.","Inervación": "Nervio mediano."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: PC3 (Quze)","content": "PC3 es un punto He-Mar (Agua) y, como tal, tiene una fuerte acción de drenaje del calor. El Dr. Wang lo utiliza sangrándolo en casos de insolación o gastroenteritis aguda con fiebre alta, vómitos y diarrea. Lo ve como una forma rápida de &#39;liberar la presión&#39; y el calor del Jiao Superior y Medio. También lo usa para temblores, relacionándolos con el Viento que surge del calor en el nivel Jueyin."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido Zu Jueyin (Hígado) -->
+            <div id="zu_jueyin" class="channel-content-jueyin hidden">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 0a3 3 0 104.243 4.243l-3.536 3.536m-1.414-1.414l-3.536-3.536a3 3 0 00-4.243 0 3 3 0 000 4.243l3.536 3.536m1.414-1.414l3.536 3.536" /></svg>
+                    Canal Zu Jueyin (Hígado)
+                </h2>
+                <div id="higado-points" class="space-y-4">
+                    <!-- H1 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zujueyin">
+                        <span class="point-pill" style="background-color: #D1FAE5; color: #059669;">H1 (Dadun)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Pozo y Punto Madera</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Dadun (Gran Montículo).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el dedo gordo del pie, 0.1 cun del ángulo lateral de la uña.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Madera en un canal de Madera. Regula el Qi en el Jiao Inferior.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Regula el Qi en el Jiao Inferior, detiene el sangrado uterino, trata hernias, calma el espíritu.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Hernia, dolor genital, sangrado uterino anormal, micción difícil.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: H1 (Dadun)","content": {"Referencias Óseas": "Falange distal del dedo gordo.","Irrigación Arterial": "Arterias digitales dorsales.","Inervación": "Nervio fibular profundo."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: H1 (Dadun)","content": "H1 es el punto Jing-Pozo del Hígado. El Dr. Wang lo utiliza principalmente para trastornos del Jiao Inferior donde el Qi de Hígado está estancado o rebelde, como en el dolor testicular agudo o hernias. También lo usa (a menudo con moxa) para el sangrado uterino anormal, similar a B1 (Yinbai), pero H1 trata más el estancamiento de sangre que causa el sangrado, mientras B1 trata la deficiencia de Bazo que no puede contener la sangre."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- H2 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zujueyin">
+                        <span class="point-pill" style="background-color: #FEE2E2; color: #DC2626;">H2 (Xingjian)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Ying-Manantial y Punto Fuego</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Xingjian (Intervalo Activo).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el dorso del pie, entre el 1er y 2º dedo, 0.5 cun proximal al borde de la membrana interdigital.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Hijo (Fuego) de un canal de Madera. Es el punto principal para drenar el Fuego de Hígado.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Drena el Fuego de Hígado, calma el Viento de Hígado, despeja el calor de la sangre, somete el Yang de Hígado.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Cefalea, mareos, ojos rojos, irritabilidad, hipertensión, sangrado uterino por calor, convulsiones.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: H2 (Xingjian)","content": {"Referencias Óseas": "Entre el 1er y 2º hueso metatarsiano.","Componente Muscular": "Músculos interóseos dorsales.","Irrigación Arterial": "Arteria arcuata.","Inervación": "Nervio fibular profundo."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: H2 (Xingjian)","content": "H2 es el &#39;punto de drenaje&#39; del Hígado. Al ser el punto Fuego del canal de Madera, puede &#39;quemar&#39; el exceso de Madera, drenando así el Fuego de Hígado. El Dr. Wang lo usa para todos los signos de ascenso de Fuego o Yang de Hígado: ojos rojos, dolor de cabeza explosivo, irritabilidad extrema e hipertensión. Es un punto de dispersión muy potente."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- H3 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zujueyin">
+                        <span class="point-pill" style="background-color: #FCD34D; color: #B45309;">H3 (Taichong)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Shu-Arroyo, Yuan-Fuente y Tierra</p>
+                         <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Taichong (Asalto Supremo).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el dorso del pie, en la depresión distal a la unión del 1er y 2º metatarsiano.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Yuan-Fuente. Es el punto más importante para regular el Qi de Hígado en todo el cuerpo.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Calma el Viento de Hígado, somete el Yang, mueve el estancamiento de Qi, nutre la Sangre de Hígado, calma el espíritu.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Tensión premenstrual, irritabilidad, cefalea tensional, mareos, dolor hipocondríaco, espasmos.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: H3 (Taichong)","content": {"Referencias Óseas": "Unión del 1er y 2º hueso metatarsiano.","Componente Muscular": "Músculos interóseos dorsales.","Irrigación Arterial": "Arteria arcuata, arteria dorsal del pie.","Inervación": "Nervio fibular profundo."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: H3 (Taichong)","content": "H3 es el punto maestro para el estancamiento de Qi de Hígado. El Dr. Wang lo describe como el &#39;pedal de gas&#39; del cuerpo. Si el Qi está estancado, H3 lo mueve. Si el Qi es rebelde, H3 lo calma. Como punto Yuan-Fuente, regula la función del Hígado de asegurar el flujo suave del Qi. A menudo lo combina con IG4 (Hegu) – la combinación se llama &#39;Las Cuatro Puertas&#39; – para abrir la circulación de Qi en todo el cuerpo. La palpación de H3 suele ser sensible en personas con estrés o frustración."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- H4 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zujueyin">
+                        <span class="point-pill" style="background-color: #E5E7EB; color: #4B5563;">H4 (Zhongfeng)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Río y Punto Metal</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Zhongfeng (Sello Central).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> 1 cun anterior al maléolo medial, en la depresión medial al tendón del tibial anterior.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Metal en un canal de Madera. El Metal controla la Madera, por lo que este punto restringe el Hígado.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Drena el Hígado, regula el Qi, despeja calor-humedad del Jiao Inferior.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Dolor hipocondríaco, dolor abdominal, hernias, emisión seminal, retención urinaria.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: H4 (Zhongfeng)","content": {"Componente Muscular": "Medial al tendón del músculo tibial anterior.","Irrigación Arterial": "Arteria maleolar anterior medial.","Inervación": "Nervio safeno."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: H4 (Zhongfeng)","content": "H4 es el punto Metal del canal de Madera. Siguiendo el ciclo de control (Ke), el Metal &#39;corta&#39; o restringe a la Madera. El Dr. Wang utiliza este principio para usar H4 cuando el Qi de Hígado está excesivamente estancado, causando una sensación de nudo u opresión en el hipocondrio o abdomen. Es un punto de &#39;desbloqueo&#39;."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- H8 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zujueyin">
+                        <span class="point-pill" style="background-color: #BFDBFE; color: #1D4ED8;">H8 (Ququan)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto He-Mar y Punto Agua</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Ququan (Manantial Sinuoso).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> Con la rodilla flexionada, en el extremo medial del pliegue poplíteo, superior al tendón del semimembranoso.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Madre (Agua genera Madera). Es el punto más importante para nutrir la Sangre y el Yin de Hígado.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Nutre la Sangre y el Yin de Hígado, relaja los tendones, despeja calor-humedad del Jiao Inferior.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Menstruación irregular, amenorrea, infertilidad (por def. de sangre), problemas oculares (sequedad), calambres.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-emerald-600 hover:text-emerald-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: H8 (Ququan)","content": {"Componente Muscular": "Superior a los tendones de los músculos semitendinoso y semimembranoso, posterior al sartorio.","Irrigación Arterial": "Arteria genicular descendente.","Inervación": "Nervio safeno."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                            <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="jueyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: H8 (Ququan)","content": "H8 es el punto He-Mar (Agua) del canal de Madera. Según el ciclo de generación (Sheng), el Agua (Madre) nutre a la Madera (Hijo). Por lo tanto, H8 es el punto principal para tonificar el Hígado, específicamente su aspecto Yin y Sangre. El Dr. Wang lo usa para la sequedad (ojos secos, piel seca, tendones rígidos) y la deficiencia de sangre (menstruación escasa, palidez, mareos)."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido Puntos Shu Antiguos Jueyin -->
+            <div id="puntos_shu_antiguos_jueyin" class="channel-content-jueyin hidden">
+                 <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.22-6.064h10.44M6.75 6.253L12 3l5.25 3.253M3 10.5l9 5.25 9-5.25M3 10.5v3l9 5.25 9-5.25v-3"/></svg>
+                    Guía Rápida de Puntos Shu Antiguos (Jueyin)
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <thead class="bg-emerald-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Categoría Shu</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Función Principal</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Movimiento Yin</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Movimiento Yang</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Pozo (Jing)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Drenan exceso, dispersan estancamiento</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Madera</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Metal</td>
+                            </tr>
+                            <tr class="bg-emerald-50/50 hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Manantial (Ying)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Despejan calor, nutren Yin y sangre</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Fuego</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Agua</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Arroyo (Shu)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Incrementan Qi, transforman humedad, calientan Yang</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tierra</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Madera</td>
+                            </tr>
+                            <tr class="bg-emerald-50/50 hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Río (Jing)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Regulan circulación del Qi en el canal</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Metal</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Fuego</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Mar (He)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tratan contraflujo, regulan Qi de órgano</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Agua</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tierra</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Contenido Fisiología Jueyin -->
+            <div id="fisiologia_jueyin" class="channel-content-jueyin hidden">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.308 17.691L3 17.523C2.138 17.024 1.5 16.037 1.5 15V4.5C1.5 3.12 2.62 2 4 2h16c1.38 0 2.5 1.12 2.5 2.5V15c0 1.037-.638 2.024-1.5 2.523l-.308.168c-1.23.673-2.694.673-3.924 0l-4.26-2.329a.5.5 0 00-.516 0L8.73 17.69c-1.23.673-2.694.673-3.924 0z" /></svg>
+                    Fisiología del Sistema Jueyin
+                </h2>
+                <div class="space-y-6 text-gray-700 leading-relaxed">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">1. Introducción al Sistema Jueyin (Yin Terminal)</h3>
+                        <p>El sistema Jueyin, compuesto por el canal del <strong>Pericardio (Shou Jueyin)</strong> y el del <strong>Hígado (Zu Jueyin)</strong>, es el nivel más profundo de los tres sistemas Yin. Su función principal es la de <strong>"cierre" (闔 He)</strong>, representando la fase final del ciclo Yin. Actúa como el sistema de almacenamiento, protección y movimiento interno de la Sangre y el Qi.</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-400">
+                        <h3 class="text-xl font-bold text-emerald-800 mb-2">2. El Principio de "Cierre" (He)</h3>
+                        <p>El clásico Suwen establece: "Taiyin abre, Jueyin cierra y Shaoyin pivotea". El "cierre" de Jueyin no significa un bloqueo, sino la función de almacenar y proteger lo más preciado. El Hígado "cierra" almacenando la Sangre (la base material para el Shen) y el Pericardio "cierra" protegiendo al Corazón (el Emperador) de los ataques patógenos. Jueyin es el guardián de la vida interior.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">3. El Eje de la Sangre y el Fuego Ministerial</h3>
+                        <div class="pl-4 border-l-2 border-gray-200 ml-2 space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Hígado (Zu Jueyin) - El General:</h4>
+                                <p>El Hígado asegura el <strong>flujo suave del Qi</strong> en todo el cuerpo, lo que permite que todas las funciones (digestión, emoción, menstruación) ocurran sin obstrucción. También <strong>almacena la Sangre</strong>, regulando su volumen en circulación. Es la raíz de la Madera, que necesita movimiento y flexibilidad.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Pericardio (Shou Jueyin) - El Protector del Corazón:</h4>
+                                <p>El Pericardio es el "Ministro" que ejecuta las órdenes del Corazón (Fuego Soberano). Alberga el <strong>Fuego Ministerial</strong>, una forma de Yang más activa y móvil que el Fuego Soberano. Gobierna la circulación de la Sangre y protege al Corazón de los "factores patógenos" emocionales y físicos. Cuando el Shen está perturbado, a menudo es el Pericardio el que está siendo "acosado".</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-pink-50 p-4 rounded-lg border-l-4 border-pink-400">
+                        <h3 class="text-xl font-bold text-pink-800 mb-2">4. Perspectiva del Dr. Wang Ju-Yi</h3>
+                         <p>El Dr. Wang ve al Jueyin como el sistema del "ritmo" y la "transición". Es el vínculo entre el Yin (almacenamiento) y el Yang (actividad), ya que Jueyin es el "Yin dentro del Yang" (según la teoría de los 6 niveles). Un Jueyin desequilibrado se manifiesta como irregularidad: ciclos menstruales erráticos, emociones volátiles (ira que pasa a llanto), o alternancia de síntomas (calor y frío, diarrea y estreñimiento). La palpación del canal de Hígado a menudo revela tensión (estancamiento), mientras que el de Pericardio puede sentirse tenso en casos de estrés emocional.</p>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">5. Resumen de Patologías Comunes de Jueyin</h3>
+                        <p>La disfunción de Jueyin está en la raíz de muchos trastornos modernos relacionados con el estrés y el desequilibrio emocional. Los patrones principales son:</p>
+                        <ul class="list-disc list-inside space-y-2 mt-2">
+                            <li><strong>Estancamiento de Qi de Hígado:</strong> Irritabilidad, frustración, suspiros, tensión en el cuello y hombros, distensión abdominal, síndrome premenstrual (SPM).</li>
+                            <li><strong>Ascenso de Yang o Fuego de Hígado:</strong> Cefalea intensa, ojos rojos, mareos, vértigo, hipertensión, ataques de ira.</li>
+                            <li><strong>Deficiencia de Sangre de Hígado:</strong> Ojos secos, visión borrosa, calambres musculares, menstruación escasa o amenorrea, palidez, insomnio (dificultad para mantenerse dormido).</li>
+                            <li><strong>Flema-Fuego Acosando al Pericardio:</strong> Ansiedad severa, insomnio con sueños muy vívidos, confusión mental, comportamiento maníaco, palpitaciones.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido Diagnóstico Jueyin -->
+            <div id="diagnostico_jueyin" class="channel-content-jueyin hidden">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                    Diagnóstico del Sistema Jueyin
+                </h2>
+                <div class="space-y-8 text-gray-700 leading-relaxed">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">1. Diagnóstico por el Pulso</h3>
+                        <div class="space-y-4">
+                            <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-400">
+                                <h4 class="font-semibold text-indigo-800">Posiciones del Pulso Jueyin</h4>
+                                <p>El pulso del sistema Jueyin se palpa en la <strong>muñeca izquierda</strong>. La función del Hígado se refleja en la posición <strong>Guan (media)</strong>, y la del Pericardio (relacionado con el Corazón) en la posición <strong>Cun (distal)</strong>.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">Pulsos Patológicos Comunes en Jueyin:</h4>
+                                <ul id="pulse-findings-jueyin" class="list-none space-y-2">
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-jueyin" value="Pulso de Cuerda (Xián)"> <strong>Estancamiento de Qi de Hígado:</strong> Pulso <strong>de Cuerda (弦 Xián)</strong>. Es el pulso clásico de Hígado. Se siente tenso como la cuerda de una guitarra. Indica que el flujo de Qi está obstruido.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-jueyin" value="Pulso de Cuerda, Rápido y Fuerte (Xián, Shù, Yŏu​lì)"> <strong>Fuego de Hígado:</strong> Pulso <strong>de Cuerda (弦)</strong>, <strong>Rápido (数)</strong> y <strong>Fuerte (有力)</strong>. Indica exceso de calor y Qi estancado.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-jueyin" value="Pulso de Cuerda y Delgado (Xián, Xì)"> <strong>Deficiencia de Sangre de Hígado:</strong> Pulso <strong>de Cuerda (弦)</strong> (por el estancamiento relativo) y <strong>Delgado (细)</strong> (por la falta de sustancia/sangre).</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-jueyin" value="Pulso Resbaladizo y Rápido (Huá, Shù)"> <strong>Flema-Fuego en Pericardio:</strong> Pulso <strong>Resbaladizo (滑)</strong> (indica flema) y <strong>Rápido (数)</strong> (indica calor).</label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">2. Diagnóstico por la Lengua</h3>
+                         <div class="space-y-4">
+                            <div class="bg-pink-50 p-4 rounded-lg border-l-4 border-pink-400">
+                                <h4 class="font-semibold text-pink-800">Zonas de la Lengua para Jueyin</h4>
+                                <p>Los <strong>lados</strong> de la lengua reflejan el estado del <strong>Hígado</strong> (y Vesícula Biliar). La <strong>punta</strong> refleja el <strong>Pericardio</strong> (como extensión del Corazón).</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">Signos Linguales Comunes en Jueyin:</h4>
+                                <ul id="tongue-findings-jueyin" class="list-none space-y-2">
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-jueyin" value="Lados de la lengua rojos o hinchados"> <strong>Estancamiento de Qi o Fuego de Hígado:</strong> Los <strong>lados</strong> de la lengua están <strong>rojos</strong> o "enrollados" hacia arriba. Indica estancamiento que se transforma en calor.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-jueyin" value="Lengua roja intensa con saburra amarilla y espesa"> <strong>Fuego de Hígado o Flema-Fuego:</strong> Cuerpo de lengua <strong>rojo intenso</strong> (indica calor extremo) con una saburra <strong>amarilla y pegajosa</strong> (indica flema-calor).</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-jueyin" value="Lengua pálida con lados más pálidos"> <strong>Deficiencia de Sangre de Hígado:</strong> Cuerpo <strong>pálido</strong> en general, pero especialmente notable en los <strong>lados</strong>. La lengua puede parecer delgada y seca.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-jueyin" value="Lengua violácea o con puntos púrpuras en los lados"> <strong>Estasis de Sangre de Hígado:</strong> Color <strong>violáceo</strong> o <strong>petequias</strong> en los lados de la lengua. Indica estancamiento crónico que ha obstruido la sangre.</label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button onclick="generarResumenJueyin()" class="bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                            ✨ Generar Resumen Clínico Jueyin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODALES UNIFICADOS ===== -->
+<div id="reparoModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center p-4 z-50 transition-opacity duration-300" onclick="hideReparo()">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full" onclick="event.stopPropagation()">
+        <div class="p-4 border-b flex justify-between items-center">
+            <h3 id="modalReparoTitle" class="text-xl font-semibold text-gray-800"></h3>
+            <button onclick="hideReparo()" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+        </div>
+        <div id="modalReparoContent" class="p-6 reparo-section max-h-[70vh] overflow-y-auto">
+        </div>
+    </div>
+</div>
+
+<div id="comentarioModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center p-4 z-50 transition-opacity duration-300" onclick="hideComentario()">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full" onclick="event.stopPropagation()">
+        <div class="p-4 border-b flex justify-between items-center">
+            <h3 id="modalComentarioTitle" class="text-xl font-semibold text-gray-800"></h3>
+            <button onclick="hideComentario()" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+        </div>
+        <div class="p-6">
+             <div id="modalComentarioContent" class="modal-content">
+             </div>
+        </div>
+    </div>
+</div>
+
+<div id="geminiModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center p-4 z-50 transition-opacity duration-300" onclick="hideGeminiModal()">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full" onclick="event.stopPropagation()">
+        <div class="p-4 border-b flex justify-between items-center">
+            <h3 id="modalGeminiTitle" class="text-xl font-semibold text-gray-800">✨ Resumen Clínico con IA</h3>
+            <button onclick="hideGeminiModal()" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+        </div>
+        <div id="modalGeminiContent" class="p-6 max-h-[70vh] overflow-y-auto">
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // --- NAVEGACIÓN PRINCIPAL ---
+    function showConformation(conformationId, element) {
+        document.querySelectorAll('.conformation-content').forEach(content => {
+            content.classList.add('hidden');
+        });
+        document.querySelectorAll('.conformation-tab-button').forEach(button => {
+            button.classList.remove('active-taiyin', 'active-shaoyin');
+        });
+        
+        document.getElementById('conformation-' + conformationId).classList.remove('hidden');
+        
+        if (conformationId === 'taiyin') {
+            element.classList.add('active-taiyin');
+            showChannelTaiyin('shou_taiyin'); // Mostrar la primera pestaña de Taiyin
+        } else if (conformationId === 'shaoyin') {
+            element.classList.add('active-shaoyin');
+            showChannelShaoyin('shou_shaoyin'); // Mostrar la primera pestaña de Shaoyin
+        } else if (conformationId === 'jueyin') {
+            element.classList.add('active-jueyin');
+            showChannelJueyin('shou_jueyin'); // Mostrar la primera pestaña de Jueyin
+        }
+    }
+
+    // --- NAVEGACIÓN INTERNA TAIYIN ---
+    function showChannelTaiyin(channelId) {
+        document.querySelectorAll('.channel-content-taiyin').forEach(content => {
+            content.classList.add('hidden');
+        });
+        document.querySelectorAll('.tab-button-taiyin').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(channelId).classList.remove('hidden');
+        const activeButton = document.querySelector(`#channel-tabs-taiyin [onclick="showChannelTaiyin('${channelId}')"]`);
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+    }
+
+    // --- NAVEGACIÓN INTERNA SHAOYIN ---
+    function showChannelShaoyin(channelId) {
+        document.querySelectorAll('.channel-content-shaoyin').forEach(content => {
+            content.classList.add('hidden');
+        });
+        document.querySelectorAll('.tab-button-shaoyin').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(channelId).classList.remove('hidden');
+        const activeButton = document.querySelector(`#channel-tabs-shaoyin [onclick="showChannelShaoyin('${channelId}')"]`);
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+    }
+
+    // --- NAVEGACIÓN INTERNA JUEYIN ---
+    function showChannelJueyin(channelId) {
+        document.querySelectorAll('.channel-content-jueyin').forEach(content => {
+            content.classList.add('hidden');
+        });
+        document.querySelectorAll('.tab-button-jueyin').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(channelId).classList.remove('hidden');
+        const activeButton = document.querySelector(`#channel-tabs-jueyin [onclick="showChannelJueyin('${channelId}')"]`);
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+    }
+
+    // --- MODALES UNIFICADOS ---
+    function showReparo(button) {
+        const reparoData = JSON.parse(button.dataset.reparo);
+        document.getElementById('modalReparoTitle').textContent = reparoData.title;
+        
+        const contentDiv = document.getElementById('modalReparoContent');
+        contentDiv.innerHTML = ''; 
+
+        const colorMap = {
+            "Referencias Óseas": "reparo-huesos",
+            "Componente Muscular": "reparo-muscular",
+            "Irrigación Arterial": "reparo-arterial",
+            "Drenaje Venoso": "reparo-venoso",
+            "Inervación": "reparo-inervacion",
+            "Relaciones Orgánicas": "reparo-organos",
+            "Estructuras Cutáneas": "reparo-cutaneo"
+        };
+
+        for (const section in reparoData.content) {
+            const wrapper = document.createElement('div');
+            const colorClass = colorMap[section] || 'reparo-default';
+            wrapper.className = `reparo-item ${colorClass}`;
+
+            const title = document.createElement('h4');
+            title.textContent = section;
+            const paragraph = document.createElement('p');
+            paragraph.textContent = reparoData.content[section];
+            
+            wrapper.appendChild(title);
+            wrapper.appendChild(paragraph);
+            contentDiv.appendChild(wrapper);
+        }
+
+        const modal = document.getElementById('reparoModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function hideReparo() {
+        const modal = document.getElementById('reparoModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function showComentario(button) {
+        const comentarioData = JSON.parse(button.dataset.comentario);
+        document.getElementById('modalComentarioTitle').textContent = comentarioData.title;
+        
+        const modalContent = document.getElementById('modalComentarioContent');
+        modalContent.innerHTML = `<p>${comentarioData.content.replace(/\n/g, '<br><br>')}</p>`;
+        
+        // Asignar clase de estilo dinámicamente
+        modalContent.className = 'modal-content'; // Reset
+        if (button.dataset.conformation === 'taiyin') {
+            modalContent.classList.add('modal-content-taiyin');
+        } else if (button.dataset.conformation === 'shaoyin') {
+            modalContent.classList.add('modal-content-shaoyin');
+        } else if (button.dataset.conformation === 'jueyin') {
+            modalContent.classList.add('modal-content-jueyin');
+        }
+        
+        const modal = document.getElementById('comentarioModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function hideComentario() {
+        const modal = document.getElementById('comentarioModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function showGeminiModal() {
+        const modal = document.getElementById('geminiModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function hideGeminiModal() {
+        const modal = document.getElementById('geminiModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // --- FUNCIONES DE IA (SEPARADAS) ---
+    async function generarResumenTaiyin() {
+        const geminiContent = document.getElementById('modalGeminiContent');
+        geminiContent.innerHTML = '<p>Analizando hallazgos de Taiyin y generando resumen...</p>';
+        showGeminiModal();
+
+        const checkedBoxes = document.querySelectorAll('.diagnosis-checkbox-taiyin:checked');
+        if (checkedBoxes.length === 0) {
+            geminiContent.innerHTML = '<p>Por favor, seleccione al menos un hallazgo de pulso o lengua de Taiyin para generar el resumen.</p>';
+            return;
+        }
+
+        let hallazgos = "Hallazgos de Pulso (Taiyin):\n";
+        document.querySelectorAll('#pulse-findings-taiyin input:checked').forEach(input => {
+            hallazgos += `- ${input.value}\n`;
+        });
+
+        hallazgos += "\nHallazgos de Lengua (Taiyin):\n";
+        document.querySelectorAll('#tongue-findings-taiyin input:checked').forEach(input => {
+            hallazgos += `- ${input.value}\n`;
+        });
+        
+        const systemPrompt = "Eres un experto en diagnóstico de Medicina China Clásica. Analiza los siguientes signos de pulso y lengua y proporciona un resumen clínico conciso del posible síndrome Taiyin, junto con los principios de tratamiento recomendados. Responde en español.";
+        const userQuery = `Basado en los siguientes hallazgos de diagnóstico para un paciente con posible desequilibrio Taiyin, genera un resumen clínico conciso y sugiere los principios de tratamiento.\n\n${hallazgos}`;
+
+        try {
+            const apiKey = ""; // API key se gestiona en el entorno
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            const response = await fetchWithRetry(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error de la API: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            const candidate = result.candidates?.[0];
+
+            if (candidate && candidate.content?.parts?.[0]?.text) {
+                let text = candidate.content.parts[0].text;
+                text = text.replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>');
+                text = text.replace(/\n/g, '<br>');
+                geminiContent.innerHTML = `<p>${text}</p>`;
+            } else {
+                throw new Error("No se recibió contenido válido de la API.");
+            }
+        } catch (error) {
+            console.error("Error al llamar a la API de Gemini (Taiyin):", error);
+            geminiContent.innerHTML = `<p class="text-red-500">Hubo un error al generar el resumen. Por favor, inténtelo de nuevo más tarde.</p>`;
+        }
+    }
+
+    async function generarResumenShaoyin() {
+        const geminiContent = document.getElementById('modalGeminiContent');
+        geminiContent.innerHTML = '<p>Analizando hallazgos de Shaoyin y generando resumen...</p>';
+        showGeminiModal();
+
+        const checkedBoxes = document.querySelectorAll('.diagnosis-checkbox-shaoyin:checked');
+        if (checkedBoxes.length === 0) {
+            geminiContent.innerHTML = '<p>Por favor, seleccione al menos un hallazgo de pulso o lengua de Shaoyin para generar el resumen.</p>';
+            return;
+        }
+
+        let hallazgos = "Hallazgos de Pulso (Shaoyin):\n";
+        document.querySelectorAll('#pulse-findings-shaoyin input:checked').forEach(input => {
+            hallazgos += `- ${input.value}\n`;
+        });
+
+        hallazgos += "\nHallazgos de Lengua (Shaoyin):\n";
+        document.querySelectorAll('#tongue-findings-shaoyin input:checked').forEach(input => {
+            hallazgos += `- ${input.value}\n`;
+        });
+        
+        const systemPrompt = "Eres un experto en diagnóstico de Medicina China Clásica. Analiza los siguientes signos de pulso y lengua y proporciona un resumen clínico conciso del posible síndrome Shaoyin, junto con los principios de tratamiento recomendados. Responde en español.";
+        const userQuery = `Basado en los siguientes hallazgos de diagnóstico para un paciente con posible desequilibrio Shaoyin, genera un resumen clínico conciso y sugiere los principios de tratamiento.\n\n${hallazgos}`;
+
+        try {
+            const apiKey = ""; // API key se gestiona en el entorno
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            const response = await fetchWithRetry(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error de la API: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            const candidate = result.candidates?.[0];
+
+            if (candidate && candidate.content?.parts?.[0]?.text) {
+                let text = candidate.content.parts[0].text;
+                text = text.replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>');
+                text = text.replace(/\n/g, '<br>');
+                geminiContent.innerHTML = `<p>${text}</p>`;
+            } else {
+                throw new Error("No se recibió contenido válido de la API.");
+            }
+        } catch (error) {
+            console.error("Error al llamar a la API de Gemini (Shaoyin):", error);
+            geminiContent.innerHTML = `<p class="text-red-500">Hubo un error al generar el resumen. Por favor, inténtelo de nuevo más tarde.</p>`;
+        }
+    }
+    
+    async function generarResumenJueyin() {
+        const geminiContent = document.getElementById('modalGeminiContent');
+        geminiContent.innerHTML = '<p>Analizando hallazgos de Jueyin y generando resumen...</p>';
+        showGeminiModal();
+
+        const checkedBoxes = document.querySelectorAll('.diagnosis-checkbox-jueyin:checked');
+        if (checkedBoxes.length === 0) {
+            geminiContent.innerHTML = '<p>Por favor, seleccione al menos un hallazgo de pulso o lengua de Jueyin para generar el resumen.</p>';
+            return;
+        }
+
+        let hallazgos = "Hallazgos de Pulso (Jueyin):\n";
+        document.querySelectorAll('#pulse-findings-jueyin input:checked').forEach(input => {
+            hallazgos += `- ${input.value}\n`;
+        });
+
+        hallazgos += "\nHallazgos de Lengua (Jueyin):\n";
+        document.querySelectorAll('#tongue-findings-jueyin input:checked').forEach(input => {
+            hallazgos += `- ${input.value}\n`;
+        });
+        
+        const systemPrompt = "Eres un experto en diagnóstico de Medicina China Clásica. Analiza los siguientes signos de pulso y lengua y proporciona un resumen clínico conciso del posible síndrome Jueyin, junto con los principios de tratamiento recomendados. Responde en español.";
+        const userQuery = `Basado en los siguientes hallazgos de diagnóstico para un paciente con posible desequilibrio Jueyin, genera un resumen clínico conciso y sugiere los principios de tratamiento.\n\n${hallazgos}`;
+
+        try {
+            const apiKey = ""; // API key se gestiona en el entorno
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            const response = await fetchWithRetry(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error de la API: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            const candidate = result.candidates?.[0];
+
+            if (candidate && candidate.content?.parts?.[0]?.text) {
+                let text = candidate.content.parts[0].text;
+                text = text.replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>');
+                text = text.replace(/\n/g, '<br>');
+                geminiContent.innerHTML = `<p>${text}</p>`;
+            } else {
+                throw new Error("No se recibió contenido válido de la API.");
+            }
+        } catch (error) {
+            console.error("Error al llamar a la API de Gemini (Jueyin):", error);
+            geminiContent.innerHTML = `<p class="text-red-500">Hubo un error al generar el resumen. Por favor, inténtelo de nuevo más tarde.</p>`;
+        }
+    }
+
+    // --- FUNCIÓN DE REINTENTO DE FETCH ---
+    async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok && response.status === 429) { // 429 Too Many Requests
+                    throw new Error('Rate limit exceeded');
+                }
+                return response;
+            } catch (error) {
+                if (i === retries - 1) throw error;
+                await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
+            }
+        }
+    }
+
+    // --- INICIALIZACIÓN ---
+    // Se elimina el listener DOMContentLoaded. El estado inicial se maneja directamente en el HTML
+    // para mayor robustez, estableciendo 'active-taiyin' y 'active' en las pestañas por defecto.
+</script>
+
+</body>
+</html>
