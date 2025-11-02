@@ -1017,6 +1017,451 @@
         </div>
     </div>
 
+    <!-- ===== CONTENIDO SHAOYIN ===== -->
+    <div id="conformation-shaoyin" class="conformation-content hidden">
+        <!-- Header Shaoyin -->
+        <header class="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
+            <h1 class="text-3xl font-bold tracking-tight">Esquema Shaoyin: Puntos Shu Antiguos</h1>
+            <p class="text-blue-200 mt-1">Canales Corazón (Shou Shaoyin) y Riñón (Zu Shaoyin)</p>
+        </header>
+
+        <!-- Navegación Interna Shaoyin -->
+        <div class="border-b border-gray-200">
+            <nav class="flex flex-wrap space-x-2 p-4" id="channel-tabs-shaoyin">
+                <button class="tab-button tab-button-shaoyin px-4 py-2 text-sm md:text-base" onclick="showChannelShaoyin('shou_shaoyin')">
+                    Shou Shaoyin (Corazón)
+                </button>
+                <button class="tab-button tab-button-shaoyin px-4 py-2 text-sm md:text-base" onclick="showChannelShaoyin('zu_shaoyin')">
+                    Zu Shaoyin (Riñón)
+                </button>
+                <button class="tab-button tab-button-shaoyin px-4 py-2 text-sm md:text-base" onclick="showChannelShaoyin('puntos_shu_antiguos_shaoyin')">
+                    Puntos Shu Antiguos
+                </button>
+                <button class="tab-button tab-button-shaoyin px-4 py-2 text-sm md:text-base" onclick="showChannelShaoyin('fisiologia_shaoyin')">
+                    Fisiología Shaoyin
+                </button>
+                <button class="tab-button tab-button-shaoyin px-4 py-2 text-sm md:text-base" onclick="showChannelShaoyin('diagnostico_shaoyin')">
+                    Diagnóstico
+                </button>
+            </nav>
+        </div>
+
+        <!-- Contenido Pestañas Shaoyin -->
+        <div class="p-6">
+            <!-- Contenido Shou Shaoyin (Corazón) -->
+            <div id="shou_shaoyin" class="channel-content-shaoyin">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                    Canal Shou Shaoyin (Corazón)
+                </h2>
+                <div id="corazon-points" class="space-y-4">
+                    <!-- C9 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoushaoyin">
+                        <span class="point-pill" style="background-color: #D1FAE5; color: #059669;">C9 (Shaochong)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Pozo y Punto Madera</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Shaochong (Pequeño Asalto).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el dedo meñique, 0.1 cun desde el ángulo radial de la uña.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Madera (Madre) en canal de Fuego (Hijo). Tonifica el Corazón y calma el espíritu. Punto de reanimación.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Reanima, calma el espíritu, despeja el calor, beneficia la lengua y los ojos.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Coma, síncope, fiebre alta, palpitaciones, dolor de pecho, manía.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: C9 (Shaochong)","content": {"Referencias Óseas": "Falange distal del 5º dedo.","Irrigación Arterial": "Arteria digital palmar propia.","Inervación": "Nervio digital palmar propio (rama del nervio ulnar)."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: C9 (Shaochong)","content": "C9 es el punto Jing-Pozo del Corazón. Es un punto de emergencia para la reanimación (abrir los orificios del Corazón) en casos de síncope o fiebre muy alta que nubla la conciencia. Al ser el punto Madera, y la Madera siendo la madre del Fuego, el Dr. Wang lo utiliza para &#39;avivar&#39; el Fuego del Corazón en casos de colapso, pero también para drenar el Fuego cuando es excesivo, a través de la sangría."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- C8 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoushaoyin">
+                        <span class="point-pill" style="background-color: #FEE2E2; color: #DC2626;">C8 (Shaofu)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Ying-Manantial y Punto Fuego</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Shaofu (Pequeño Palacio).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la palma, entre el 4º y 5º metacarpiano, donde la punta del meñique toca al cerrar el puño.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Fuego en un canal de Fuego. Despeja el Fuego del Corazón y calma el Shen.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Despeja el Fuego del Corazón, calma el espíritu, regula el Qi del Jiao Inferior (vía ID).</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Palpitaciones, ansiedad, insomnio, úlceras bucales, enuresis, micción dolorosa (calor transmitido al ID/Vejiga).</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: C8 (Shaofu)","content": {"Referencias Óseas": "Cabezas del 4º y 5º hueso metacarpiano.","Componente Muscular": "Entre los tendones flexores, sobre los músculos lumbricales.","Irrigación Arterial": "Arco palmar superficial.","Inervación": "Nervio ulnar."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: C8 (Shaofu)","content": "C8 es el punto Ying-Manantial (Fuego) del Corazón. Es el punto principal para drenar el Fuego del Corazón. El Dr. Wang lo usa para la agitación mental, insomnio severo y úlceras en la lengua (la punta de la lengua es la &#39;rama&#39; del Corazón). También lo destaca por su capacidad de despejar el calor que el Corazón transmite al Intestino Delgado, tratando así problemas urinarios como la micción dolorosa (síndrome Lin por calor)."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- C7 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoushaoyin">
+                        <span class="point-pill" style="background-color: #FCD34D; color: #B45309;">C7 (Shenmen)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Shu-Arroyo, Yuan-Fuente y Tierra</p>
+                         <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Shenmen (Puerta del Espíritu).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En el pliegue de la muñeca, en el lado radial del tendón del flexor ulnar del carpo.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Yuan-Fuente, conecta con el Qi original del Corazón. Punto Tierra (Hijo) en canal de Fuego (Madre), tiene efecto sedante.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Calma el espíritu (Shen) de forma profunda, nutre la Sangre de Corazón, regula el Qi de Corazón.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Insomnio (especialmente por deficiencia), ansiedad, palpitaciones, mala memoria, demencia, pánico.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: C7 (Shenmen)","content": {"Componente Muscular": "Lado radial del tendón del músculo flexor carpi ulnaris.","Irrigación Arterial": "Arteria ulnar.","Inervación": "Nervio ulnar."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: C7 (Shenmen)","content": "C7-Shenmen es quizás el punto más importante para tratar el Shen (Espíritu). Como punto Yuan-Fuente, regula la función fundamental del Corazón de albergar la mente. El Dr. Wang lo utiliza para cualquier tipo de trastorno emocional o del sueño. Lo diferencia de otros puntos de Shen (como PC7) al señalar que C7 es más nutritivo, ideal para la ansiedad o el insomnio basados en la deficiencia de Sangre o Yin del Corazón. Es un punto de armonización y tonificación."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- C4 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoushaoyin">
+                        <span class="point-pill" style="background-color: #E5E7EB; color: #4B5563;">C4 (Lingdao)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Río y Punto Metal</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Lingdao (Camino del Espíritu).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> 1.5 cun proximal a C7, en el lado radial del tendón del flexor ulnar del carpo.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Metal en un canal de Fuego. El Metal aporta calma y estructura al Fuego.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Calma el espíritu, relaja los tendones, beneficia la voz.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Pérdida súbita de la voz, rigidez de la lengua, dolor de codo y brazo, ansiedad, miedo.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: C4 (Lingdao)","content": {"Componente Muscular": "Lado radial del tendón del músculo flexor carpi ulnaris.","Irrigación Arterial": "Arteria ulnar.","Inervación": "Nervio ulnar."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: C4 (Lingdao)","content": "Como punto Jing-Río, C4 trata las alteraciones de la voz. El Dr. Wang lo utiliza específicamente cuando la pérdida de voz tiene un origen emocional o de shock, donde el Shen está afectado. El nombre &#39;Camino del Espíritu&#39; sugiere su papel en desbloquear el Qi del Corazón para que la expresión (la voz) pueda fluir."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- C3 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card shoushaoyin">
+                        <span class="point-pill" style="background-color: #BFDBFE; color: #1D4ED8;">C3 (Shaohai)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto He-Mar y Punto Agua</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Shaohai (Pequeño Mar).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> Con el codo flexionado, en el extremo medial del pliegue del codo, anterior al epicóndilo medial.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Agua en un canal de Fuego. El Agua controla el Fuego. Calma el Fuego del Corazón y transforma la flema.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Calma el Fuego de Corazón, transforma la flema, calma el espíritu, relaja los tendones.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Ansiedad, manía, epilepsia (por flema-fuego), dolor de codo, entumecimiento del brazo, temblores.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: C3 (Shaohai)","content": {"Referencias Óseas": "Epicóndilo medial del húmero.","Componente Muscular": "Entre el músculo pronator teres y el brachialis.","Irrigación Arterial": "Arteria colateral ulnar inferior.","Inervación": "Nervio cutáneo antebraquial medial."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: C3 (Shaohai)","content": "C3 es el punto He-Mar (Agua) del Corazón. El Dr. Wang lo utiliza para &#39;apagar&#39; el Fuego del Corazón. Es un punto sedante muy potente. Lo usa en casos de Flema-Fuego que acosa al Corazón, manifestándose como manía, risa inapropiada o llanto incontrolable. Al ser un punto Agua, ayuda a anclar el Fuego y calmar la mente de forma drástica."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido Zu Shaoyin (Riñón) -->
+            <div id="zu_shaoyin" class="channel-content-shaoyin hidden">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 0a3 3 0 104.243 4.243l-3.536 3.536m-1.414-1.414l-3.536-3.536a3 3 0 00-4.243 0 3 3 0 000 4.243l3.536 3.536m1.414-1.414l3.536 3.536" /></svg>
+                    Canal Zu Shaoyin (Riñón)
+                </h2>
+                <div id="rinon-points" class="space-y-4">
+                    <!-- R1 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zushaoyin">
+                        <span class="point-pill" style="background-color: #D1FAE5; color: #059669;">R1 (Yongquan)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Pozo y Punto Madera</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Yongquan (Manantial Burbujeante).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la planta del pie, en la depresión que se forma al flexionar los dedos, entre el 2º y 3º metatarsiano.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Madera (Hijo) en canal de Agua (Madre). Drena el exceso de arriba (Fuego, Viento) y tonifica el Yin de abajo.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Desciende el Fuego por deficiencia, calma el Viento de Hígado, ancla el Yang, reanima.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Insomnio (por Fuego que sube), hipertensión, cefalea, vértigo, síncope, agitación.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: R1 (Yongquan)","content": {"Componente Muscular": "Aponeurosis plantar, entre el 2º y 3º tendón del flexor corto de los dedos.","Irrigación Arterial": "Arco plantar.","Inervación": "Nervio plantar medial."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: R1 (Yongquan)","content": "R1 es el punto más bajo del cuerpo y tiene una poderosa acción de anclaje. El Dr. Wang lo utiliza para &#39;arrastrar hacia abajo&#39; el exceso de la parte superior, como el Yang de Hígado ascendente (hipertensión, ira) o el Fuego por deficiencia de Yin (calor en la cara, insomnio). Es un punto de drenaje, no de tonificación. Masajearlo antes de dormir es una recomendación común para anclar la mente."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- R2 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zushaoyin">
+                        <span class="point-pill" style="background-color: #FEE2E2; color: #DC2626;">R2 (Rangu)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Ying-Manantial y Punto Fuego</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Rangu (Valle Ardiente).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la depresión inferior a la tuberosidad del navicular.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Fuego en un canal de Agua. Introduce calor en el Riñón, pero también drena el Fuego por deficiencia de Yin.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Despeja el Fuego por deficiencia, nutre el Yin de Riñón, regula el Jiao Inferior.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Sudores nocturnos, garganta seca, calor en los 5 centros, sed, diabetes, menstruación irregular.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: R2 (Rangu)","content": {"Referencias Óseas": "Tuberosidad del hueso navicular.","Componente Muscular": "Sobre el músculo abductor del hallux.","Irrigación Arterial": "Arteria plantar medial.","Inervación": "Nervio plantar medial."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: R2 (Rangu)","content": "R2 es el punto Ying-Manantial (Fuego) del Riñón. Es el punto clave para tratar el Fuego por Deficiencia de Yin. El Dr. Wang explica que este &#39;fuego falso&#39; surge cuando el Agua de Riñón es insuficiente para controlar el Fuego. Se manifiesta como calores nocturnos, garganta seca por la noche, y calor en palmas y plantas. R2 enfría este calor sin dañar el Yin."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- R3 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zushaoyin">
+                        <span class="point-pill" style="background-color: #FCD34D; color: #B45309;">R3 (Taixi)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Shu-Arroyo, Yuan-Fuente y Tierra</p>
+                         <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Taixi (Gran Arroyo).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> En la depresión entre el maléolo medial y el tendón de Aquiles.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Yuan-Fuente. Es el punto más importante para tonificar el Riñón (Yin, Yang, Qi y Esencia).</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Tonifica el Riñón (Yin y Yang), fortalece la zona lumbar y las rodillas, ancla el Qi de Pulmón.</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Dolor lumbar crónico, debilidad de rodillas, impotencia, infertilidad, asma crónica, tinnitus, sordera, envejecimiento prematuro.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: R3 (Taixi)","content": {"Referencias Óseas": "Entre el maléolo medial y el calcáneo.","Componente Muscular": "Entre el tendón de Aquiles (posterior) y el tendón del tibial posterior (anterior).","Irrigación Arterial": "Arteria tibial posterior.","Inervación": "Nervio tibial."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: R3 (Taixi)","content": "R3-Taixi es el punto Yuan-Fuente del Riñón. El Dr. Wang se refiere a él como el &#39;punto constitucional&#39;. Es el lugar principal para acceder y tonificar el Qi Prenatal (la Esencia). Lo utiliza para cualquier condición crónica de deficiencia, especialmente las relacionadas con el envejecimiento, la debilidad lumbar y la infertilidad. La palpación del pulso de la arteria tibial posterior en R3 es una técnica diagnóstica clave para evaluar el estado del Riñón."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- R7 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zushaoyin">
+                        <span class="point-pill" style="background-color: #E5E7EB; color: #4B5563;">R7 (Fuliu)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto Jing-Río y Punto Metal</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Fuliu (Corriente Restaurada).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> 2 cun proximal a R3, en el borde anterior del tendón de Aquiles.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Metal (Madre) en canal de Agua (Hijo). Tonifica el Riñón, especialmente el Yang.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Tonifica el Yang de Riñón, regula la sudoración, regula las vías del agua (drena edema).</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Edema (especialmente en piernas), sudoración excesiva (espontánea o nocturna), dolor lumbar, diarrea crónica (por def. Yang).</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: R7 (Fuliu)","content": {"Componente Muscular": "Borde anterior del tendón de Aquiles, sobre el músculo flexor largo del hallux.","Irrigación Arterial": "Arteria tibial posterior.","Inervación": "Nervio tibial, nervio safeno."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: R7 (Fuliu)","content": "R7 es el punto Metal (Madre) del canal de Agua (Hijo), por lo que es un punto tonificante. El Dr. Wang lo destaca por su doble acción sobre los fluidos: 1) Drena el exceso de fluidos (edema) al fortalecer la función del Riñón de transformar el agua. 2) Consolida los fluidos cuando se pierden, siendo el punto principal para la sudoración anormal (ya sea por deficiencia de Yin o Yang). Es un gran regulador del metabolismo del agua."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                    <!-- R10 -->
+                    <div class="bg-gray-50 p-4 rounded-lg content-card zushaoyin">
+                        <span class="point-pill" style="background-color: #BFDBFE; color: #1D4ED8;">R10 (Yingu)</span>
+                        <p class="text-lg font-semibold mt-2">Clasificación: Punto He-Mar y Punto Agua</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <details class="text-sm">
+                                <summary class="font-bold cursor-pointer text-gray-700 hover:text-black">Ver Detalles</summary>
+                                <div class="mt-2 space-y-2">
+                                    <p class="detail-item"><strong>Nombre y Traducción:</strong> Yingu (Valle del Yin).</p>
+                                    <p class="detail-item"><strong>Localización:</strong> Con la rodilla flexionada, en el lado medial del hueco poplíteo, entre los tendones del semitendinoso y semimembranoso.</p>
+                                    <p class="detail-item"><strong>Fundamentos:</strong> Punto Agua en un canal de Agua. Fortalece el Yin del Jiao Inferior.</p>
+                                    <p class="detail-item"><strong>Funciones:</strong> Nutre el Yin de Riñón, beneficia el Jiao Inferior (genitales, útero).</p>
+                                    <p class="detail-item"><strong>Aplicaciones Clínicas:</strong> Impotencia, dolor genital, dolor de rodilla, sangrado uterino, leucorrea.</p>
+                                </div>
+                            </details>
+                            <button class="text-sm font-bold text-blue-600 hover:text-blue-800 action-button" 
+                                    data-reparo='{"title": "Reparo Anatómico: R10 (Yingu)","content": {"Componente Muscular": "Entre los tendones de los músculos semitendinoso y semimembranoso.","Irrigación Arterial": "Arteria genicular media.","Inervación": "Nervio tibial."}}'
+                                    onclick="showReparo(this)">Ver Reparo Anatómico</button>
+                             <button class="text-sm font-bold text-teal-600 hover:text-teal-800 action-button"
+                                    data-conformation="shaoyin"
+                                    data-comentario='{"title": "Comentarios del Dr. Wang: R10 (Yingu)","content": "R10 es el punto He-Mar (Agua) del Riñón. Al ser Agua sobre Agua, tiene una profunda acción de nutrir el Yin. El Dr. Wang lo utiliza para fortalecer el Yin del Jiao Inferior, especialmente en trastornos genitourinarios como la impotencia o la leucorrea por deficiencia de Riñón. Lo compara con H8 (Ququan), que nutre la Sangre de Hígado, mientras R10 nutre el Yin de Riñón."}'
+                                    onclick="showComentario(this)">Comentarios del Dr. Wang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido Puntos Shu Antiguos Shaoyin -->
+            <div id="puntos_shu_antiguos_shaoyin" class="channel-content-shaoyin hidden">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.22-6.064h10.44M6.75 6.253L12 3l5.25 3.253M3 10.5l9 5.25 9-5.25M3 10.5v3l9 5.25 9-5.25v-3"/></svg>
+                    Guía Rápida de Puntos Shu Antiguos (Shaoyin)
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <thead class="bg-blue-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider">Categoría Shu</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider">Función Principal</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider">Movimiento Yin</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider">Movimiento Yang</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Pozo (Jing)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Drenan exceso, dispersan estancamiento</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Madera</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Metal</td>
+                            </tr>
+                            <tr class="bg-blue-50/50 hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Manantial (Ying)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Despejan calor, nutren Yin y sangre</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Fuego</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Agua</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Arroyo (Shu)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Incrementan Qi, transforman humedad, calientan Yang</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tierra</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Madera</td>
+                            </tr>
+                            <tr class="bg-blue-50/50 hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Río (Jing)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Regulan circulación del Qi en el canal</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Metal</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Fuego</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-800">Mar (He)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tratan contraflujo, regulan Qi de órgano</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Agua</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">Tierra</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Contenido Fisiología Shaoyin -->
+            <div id="fisiologia_shaoyin" class="channel-content-shaoyin hidden">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    Fisiología del Sistema Shaoyin
+                </h2>
+                <div class="space-y-6 text-gray-700 leading-relaxed">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">1. Introducción al Sistema Shaoyin (Yin Menor)</h3>
+                        <p>El sistema Shaoyin, compuesto por el canal del <strong>Corazón (Shou Shaoyin)</strong> y el del <strong>Riñón (Zu Shaoyin)</strong>, es el nivel intermedio de los tres sistemas Yin. Su función principal es la de <strong>"pivote" (樞 Shū)</strong>. Es el eje central de la vida, conectando el Fuego (Corazón) y el Agua (Riñón), el Yang y el Yin fundamental del cuerpo. Es la raíz de la Esencia (Jing) y el Espíritu (Shen).</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                        <h3 class="text-xl font-bold text-blue-800 mb-2">2. El Principio de "Pivote" (Shū)</h3>
+                        <p>El clásico Suwen establece: "Taiyin abre, Jueyin cierra y Shaoyin pivotea". Shaoyin actúa como el "pivote de la puerta" que permite a los otros niveles abrir y cerrar. Conecta el Jiao Superior (Corazón) con el Jiao Inferior (Riñón), y el Fuego Soberano con el Agua esencial. Es el eje que mantiene el equilibrio dinámico entre el Fuego y el Agua en todo el organismo. Si este pivote falla, el Fuego y el Agua se separan, llevando a las patologías más profundas.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">3. El Eje Corazón-Riñón (Fuego y Agua)</h3>
+                        <div class="pl-4 border-l-2 border-gray-200 ml-2 space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Corazón (Shou Shaoyin) - El Fuego Soberano:</h4>
+                                <p>El Corazón alberga el <strong>Shen (Espíritu)</strong> y gobierna la Sangre y los vasos. Es el "Emperador" que proporciona la conciencia, el pensamiento claro y la vitalidad emocional. Su Fuego Yang debe descender para calentar el Agua del Riñón.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Riñón (Zu Shaoyin) - El Agua Esencial:</h4>
+                                <p>El Riñón almacena la <strong>Esencia (Jing)</strong>, la base de todo el Yin y Yang del cuerpo (el Ming Men o Fuego de la Vida). Su Agua Yin debe ascender para nutrir y enfriar el Fuego del Corazón, evitando que se descontrole.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-pink-50 p-4 rounded-lg border-l-4 border-pink-400">
+                        <h3 class="text-xl font-bold text-pink-800 mb-2">4. Armonía de Fuego y Agua (Kan y Li)</h3>
+                        <p>La salud del Shaoyin depende de la comunicación constante entre Corazón y Riñón. Este equilibrio se llama "Armonía de Kan y Li". El Fuego del Corazón (Yang) desciende para calentar el Yang de Riñón. El Agua del Riñón (Yin) asciende para nutrir el Yin de Corazón. Si esta conexión se rompe (por ejemplo, por deficiencia de Yin de Riñón), el Fuego de Corazón se descontrola (Fuego por Deficiencia), causando insomnio, ansiedad y calores nocturnos.</p>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                        <h3 class="text-xl font-bold text-yellow-800 mb-2">5. Perspectiva del Dr. Wang Ju-Yi</h3>
+                         <p>El Dr. Wang considera el Shaoyin como el sistema constitucional más profundo. La palpación de estos canales revela el estado de la reserva fundamental del paciente. Un canal de Riñón débil, frío o deprimido (especialmente R3-Taixi) indica agotamiento del Jing. Un canal de Corazón tenso o caliente puede indicar que el Shen está perturbado o que el Fuego no está siendo anclado. Para él, tratar el Shaoyin es tratar la raíz misma de la vitalidad y la conciencia.</p>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">6. Resumen de Patologías Comunes del Shaoyin</h3>
+                        <p>La disfunción de Shaoyin representa un desequilibrio fundamental, a menudo crónico y profundo.</p>
+                        <ul class="list-disc list-inside space-y-2 mt-2">
+                            <li><strong>Deficiencia de Yin de Riñón (Agua no nutre):</strong> Sudores nocturnos, garganta seca, calor en los 5 centros, tinnitus, dolor lumbar, infertilidad.</li>
+                            <li><strong>Deficiencia de Yang de Riñón (Fuego de Vida débil):</strong> Frío en lumbares y rodillas, edema, micción frecuente y pálida, fatiga extrema, impotencia, diarrea matutina.</li>
+                            <li><strong>Desarmonía Corazón-Riñón (Fuego y Agua separados):</strong> Insomnio (dificultad para conciliar el sueño), palpitaciones, ansiedad, mala memoria, sensación de calor en el pecho pero pies fríos.</li>
+                            <li><strong>Fuego de Corazón Hiperactivo (Exceso):</strong> Ansiedad severa, manía, úlceras bucales dolorosas, sensación de quemazón en el pecho.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido Diagnóstico Shaoyin -->
+            <div id="diagnostico_shaoyin" class="channel-content-shaoyin hidden">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                    Diagnóstico del Sistema Shaoyin
+                </h2>
+                <div class="space-y-8 text-gray-700 leading-relaxed">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">1. Diagnóstico por el Pulso</h3>
+                        <div class="space-y-4">
+                            <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-400">
+                                <h4 class="font-semibold text-indigo-800">Posiciones del Pulso Shaoyin</h4>
+                                <p>El pulso del sistema Shaoyin se palpa en <strong>ambas muñecas</strong>. La función del Corazón se refleja en la posición <strong>Cun (distal) izquierda</strong>. La del Riñón se refleja en las posiciones <strong>Chi (proximal)</strong> de <strong>ambas muñecas</strong>.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">Pulsos Patológicos Comunes en Shaoyin:</h4>
+                                <ul id="pulse-findings-shaoyin" class="list-none space-y-2">
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-shaoyin" value="Pulso Profundo, Delgado y Débil (Chén, Xì, Ruò) en posiciones Chi"> <strong>Deficiencia de Riñón (Yin y Yang):</strong> Pulso <strong>Profundo (沉)</strong>, <strong>Delgado (细)</strong> y <strong>Débil (弱)</strong>, especialmente en las posiciones Chi. Indica agotamiento de la Esencia.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-shaoyin" value="Pulso Rápido y Delgado (Shù, Xì)"> <strong>Deficiencia de Yin (Fuego por Deficiencia):</strong> Pulso <strong>Rápido (数)</strong> (indica calor) y <strong>Delgado (细)</strong> (indica falta de sustancia/Yin).</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-shaoyin" value="Pulso Profundo y Lento (Chén, Chí)"> <strong>Deficiencia de Yang:</strong> Pulso <strong>Profundo (沉)</strong> y <strong>Lento (迟)</strong>. Indica falta de Fuego y dinamismo.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-shaoyin" value="Pulso Rápido e Irregular (Shù, Cù o Jié)"> <strong>Fuego de Corazón o Qi de Corazón alterado:</strong> Pulso <strong>Rápido (数)</strong> y <strong>Desigual (促 Cù o 结 Jié)</strong>. Indica que el Shen está agitado.</label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">2. Diagnóstico por la Lengua</h3>
+                         <div class="space-y-4">
+                            <div class="bg-pink-50 p-4 rounded-lg border-l-4 border-pink-400">
+                                <h4 class="font-semibold text-pink-800">Zonas de la Lengua para Shaoyin</h4>
+                                <p>La <strong>punta</strong> de la lengua refleja el estado del <strong>Corazón</strong>. La <strong>raíz</strong> de la lengua corresponde al <strong>Riñón</strong>.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">Signos Linguales Comunes en Shaoyin:</h4>
+                                <ul id="tongue-findings-shaoyin" class="list-none space-y-2">
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-shaoyin" value="Lengua roja con punta más roja y saburra escasa"> <strong>Deficiencia de Yin (Fuego por Deficiencia):</strong> Cuerpo <strong>rojo</strong>, especialmente la <strong>punta</strong>. <strong>Saburra escasa, pelada o geográfica</strong>. Indica calor por falta de Agua.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-shaoyin" value="Lengua pálida, hinchada y húmeda"> <strong>Deficiencia de Yang:</strong> Cuerpo <strong>pálido</strong>, <strong>hinchado</strong> (edematoso) y <strong>muy húmedo</strong>. Saburra blanca y resbaladiza.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-shaoyin" value="Punta de la lengua roja con úlceras"> <strong>Fuego de Corazón (Exceso):</strong> La <strong>punta</strong> de la lengua está <strong>roja intensa</strong>, a menudo con puntos rojos elevados (papilas) o úlceras dolorosas.</label></li>
+                                    <li><label><input type="checkbox" class="diagnosis-checkbox-shaoyin" value="Raíz de la lengua con saburra espesa (amarilla o blanca)"> <strong>Disfunción del Riñón:</strong> Una saburra espesa en la <strong>raíz</strong> (que debería estar limpia) indica patología en el Jiao Inferior (a menudo Humedad-Calor o Humedad-Frío).</label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button onclick="generarResumenShaoyin()" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                            ✨ Generar Resumen Clínico Shaoyin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== CONTENIDO JUEYIN ===== -->
     <div id="conformation-jueyin" class="conformation-content hidden">
         <header class="bg-gradient-to-r from-emerald-600 to-teal-700 p-6 text-white">
@@ -1500,7 +1945,7 @@
             content.classList.add('hidden');
         });
         document.querySelectorAll('.conformation-tab-button').forEach(button => {
-            button.classList.remove('active-taiyin', 'active-shaoyin');
+            button.classList.remove('active-taiyin', 'active-shaoyin', 'active-jueyin');
         });
         
         document.getElementById('conformation-' + conformationId).classList.remove('hidden');
@@ -1850,3 +2295,4 @@
 
 </body>
 </html>
+    
